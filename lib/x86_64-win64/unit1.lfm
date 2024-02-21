@@ -76,6 +76,7 @@ object Form1: TForm1
         Minors = <>
         Title.LabelBrush.Style = bsClear
       end>
+    Extent.UseYMin = True
     Title.Text.Strings = (
       'Length (mm)'
     )
