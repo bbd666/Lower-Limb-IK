@@ -8,10 +8,11 @@ uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, ComCtrls,
   GLScene, GLViewer, GLCadencer, GLHUDObjects, GLBitmapFont, GLWindowsFont,
   GLObjects, GLVectortypes, GLVectorGeometry, Types, LCLType, StdCtrls, Buttons,
-  TAGraph, TASeries, GlKeyboard, GLBaseClasses, GLVectorFileObjects, DiffEvol,
-  Inifiles, utypes, dmath, math,
+  TAGraph, TASeries, GlKeyboard, GLVectorFileObjects, DiffEvol,
+  Inifiles, utypes,math,
   ubfgs,
-  glfile3ds,glfileobj;
+  glfile3ds,glfileobj,
+  DateUtils;
 
 const
   nb_VICON_Mkr=41;       //Nb de marqueurs VICON
@@ -25,7 +26,7 @@ type
   TForm1 = class(TForm)
     BitBtn1: TBitBtn;
     Button1: TButton;
-    Button2: TButton;
+    Edit_Folder_Processing: TButton;
     CBLTH: TCheckBox;
     CBRTH: TCheckBox;
     CBLSH: TCheckBox;
@@ -47,6 +48,7 @@ type
     GLTibia_L: TGLFreeForm;
     GLHip: TGLFreeForm;
     GLTibia_R: TGLFreeForm;
+    FolderEdit: TLabeledEdit;
     LineSeries2: TLineSeries;
     LineSeries3: TLineSeries;
     LineSeries4: TLineSeries;
@@ -79,7 +81,7 @@ type
     GroupBox11: TGroupBox;
     GroupBox12: TGroupBox;
     GroupBox9: TGroupBox;
-    IK_Analysis: TButton;
+    Edit_Run_Joint_Angles: TButton;
     CheckBox1: TCheckBox;
     CheckBox2: TCheckBox;
     CheckBox3: TCheckBox;
@@ -97,6 +99,7 @@ type
     L_Knee_Shift: TLabeledEdit;
     R_Knee_Shift: TLabeledEdit;
     SAVEAnkle1: TButton;
+    SelectDirectoryDialog1: TSelectDirectoryDialog;
     StatusBar1: TStatusBar;
     SAVEAnkle: TButton;
     ChartButton: TButton;
@@ -174,11 +177,13 @@ type
     TrackBar1: TTrackBar;
     procedure BitBtn1Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
+    procedure Edit_Folder_ProcessingClick(Sender: TObject);
     procedure DisplayOptionChange(Sender: TObject);
+    procedure FolderEditDblClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure Frame_Index_EditChange(Sender: TObject);
     procedure GAKneeButtonClick(Sender: TObject);
-    procedure IK_AnalysisClick(Sender: TObject);
+    procedure Edit_Run_Joint_AnglesClick(Sender: TObject);
     procedure ChartButtonClick(Sender: TObject);
     procedure CheckBoxChange(Sender: TObject);
     procedure LMKneeButtonClick(Sender: TObject);
@@ -213,6 +218,8 @@ type
     procedure R_rot_zChange(Sender: TObject);
     procedure TrackBar1Change(Sender: TObject);
   private
+    procedure init_EditBoxes;
+    procedure Calcul_Angles_articulaires(filename:string);
     Procedure Fill_Joints_Center_Tabs;
     procedure scale_bones;
     procedure Update_Body_Lines;
@@ -232,7 +239,7 @@ type
 var
   Form1: TForm1;
   mx,my : integer;
-  nom_mocap,nom_ik:string;
+  nom_mocap,nom_ik,Folder_Name:string;
   nb_blocs, NB_GENERATION,nb_pop:integer;
   RASI,LASI,root,LPSI,RKNEE,LKNEE,LANK,LTOE,LHEE,LMT5,RANK,RTOE,RHEE,RMT5,LTHI,RTHI:array of GLVectorgeometry.Tvector;
   Lrot_TAB,Rrot_TAB,LAnkl_TAB,Rankl_TAB:Array of GLVectorgeometry.tvector;
@@ -241,6 +248,7 @@ var
   NVAR:Integer;
   Frame_Index:integer=0;
   centers_updated:boolean=TRUE;
+  Folder_out_Name:string;
 
   Function Func(Population :TVector):double;
   Function calc_localFrame_Knee(i:integer;side:TSIDE):GLVectorgeometry.TMatrix;
@@ -365,6 +373,8 @@ begin
    checkbox10.Checked:=config.readbool('SHOW/HIDE SETTINGS','CHECKBOX10',TRUE);
    checkbox11.Checked:=config.readbool('SHOW/HIDE SETTINGS','CHECKBOX11',TRUE);
 
+   Folder_out_Name:=config.ReadString('RESULT FOLDER','NAME','');
+
    config.free;
 end;
 
@@ -424,9 +434,12 @@ end;
 
 procedure TForm1.MoCapFileEditDblClick(Sender: TObject);
 begin
-     if OpenDialog1.Execute then  nom_mocap := OpenDialog1.FileName;
-     MoCapFileEdit.Text:=OpenDialog1.FileName;
-     Load_Exp_marker_Coords(sender);
+     if OpenDialog1.Execute then
+     begin
+      nom_mocap := OpenDialog1.FileName;
+      MoCapFileEdit.Text:=OpenDialog1.FileName;
+      Load_Exp_marker_Coords(sender);
+     end;
 end;
 
 procedure TForm1.R_Ankle_xChange(Sender: TObject);
@@ -1456,12 +1469,82 @@ begin
    config.free;
 end;
 
+procedure TForm1.Edit_Folder_ProcessingClick(Sender: TObject);
+var
+   File_List:Tstringlist;
+   Info   : TSearchRec;
+   i:integer;
+   ElapsedTime: TDateTime;
+   Y,Mo,D,H,Mi,S,MS : Word;
+
+begin
+
+   ElapsedTime := Now;
+
+   File_List := TStringList.Create;
+   If FindFirst(Folder_Name+'\*.csv',faAnyFile,Info)=0 Then
+   Begin
+      Repeat
+       File_List.Add(Info.Name);
+      Until
+      FindNext(Info)<>0;
+      FindClose(Info);
+   End;
+
+   for i:=0 to File_List.Count-1 do
+   begin
+      nom_mocap:=Folder_Name+'\'+File_List[i];
+      nb_blocs:=0;
+      Load_Exp_marker_Coords(sender);
+      init_EditBoxes;
+      if nb_blocs>0 then
+      begin
+       BFGS_Opt(1);
+       BFGS_Opt(2);
+       LMKneeButtonClick(Sender);
+       Calcul_Angles_articulaires(nom_mocap);
+       caption:=nom_mocap;
+      end;
+   end;
+  File_List.free;
+  ElapsedTime := Now-ElapsedTime;
+  DecodeDateTime(ElapsedTime,Y,Mo,D,H,Mi,S,MS);
+//  caption:=DateTimeToStr(ElapsedTime);
+  caption:='Elapsed Time : '+inttostr(H)+' Hours, '+inttostr(Mi)+' Minutes, '+inttostr(S)+' Seconds, '+inttostr(Ms)+' Milliseconds';
+
+end;
+
+procedure TForm1.init_EditBoxes;
+begin
+ L_rot_x.Text:='0';
+ L_rot_y.Text:='0';
+ L_rot_z.Text:='0';
+ R_rot_x.Text:='0';
+ R_rot_y.Text:='0';
+ R_rot_z.Text:='0';
+ L_Ankle_x.Text:='0';
+ L_Ankle_y.Text:='0';
+ L_Ankle_z.Text:='0';
+ R_Ankle_x.Text:='0';
+ R_Ankle_y.Text:='0';
+ R_Ankle_z.Text:='0';
+end;
+
 procedure TForm1.DisplayOptionChange(Sender: TObject);
 begin
  Lineseries1.Active:=CBLTH.Checked;
  Lineseries2.Active:=CBRTH.Checked;
  Lineseries3.Active:=CBLSH.Checked;
  Lineseries4.Active:=CBRSH.Checked;
+end;
+
+procedure TForm1.FolderEditDblClick(Sender: TObject);
+begin
+     if SelectDirectoryDialog1.Execute then
+     begin
+      folder_name := SelectDirectoryDialog1.FileName;
+      FolderEdit.Text:=folder_name;
+     end;
 end;
 
 procedure TForm1.FormClose(Sender: TObject; var CloseAction: TCloseAction);
@@ -1479,7 +1562,12 @@ begin
    if nb_blocs>0 then GA_Opt(3);
 end;
 
-procedure TForm1.IK_AnalysisClick(Sender: TObject);
+procedure TForm1.Edit_Run_Joint_AnglesClick(Sender: TObject);
+begin
+    Calcul_Angles_articulaires(nom_mocap);
+end;
+
+procedure TForm1.Calcul_Angles_articulaires(filename:string);
 var
   xaxis,yaxis,zaxis,center,Lrot,Rrot,LCenter,RCenter,LAnkl,RAnkl:GLVectorgeometry.Tvector;
   M,LShank,RShank,LThigh,RThigh:GLVectorgeometry.Tmatrix;
@@ -1493,7 +1581,11 @@ var
   LKNEE_ANGLE,RKNEE_ANGLE:double;
   v1,v2,v3,v4:GLVectorgeometry.tvector;
 
+
 begin
+
+  //Folder_out_Name:='\\ssanasva2\pierre.lemerle\OUT\';
+  //Folder_out_Name:='\\ssanasva2\Video_PMT$\VICON DATA MOBY DECK\IK results\';
 
   v1:=vectormake(strtofloat(L_rot_x.Text),strtofloat(L_rot_y.Text),strtofloat(L_rot_z.Text));
   v2:=vectormake(strtofloat(R_rot_x.Text),strtofloat(R_rot_y.Text),strtofloat(R_rot_z.Text));
@@ -1513,7 +1605,7 @@ begin
    RKN[i]:=Build_Shifted_Knee(i,strtofloat(R_Knee_Shift.Text),TSIDE.RIGHT);
   end;
 
-  nom_ik:=ChangeFileExt(nom_mocap,'.ik');
+  nom_ik:=Folder_out_Name+extractfilename(ChangeFileExt(filename,'.ik'));
   assignfile(outputfile,nom_ik);
   rewrite(outputfile);
 
@@ -1609,30 +1701,12 @@ begin
     Q:=QuaternionFromMatrix(M);
     Writeln(outputfile,'LEFT ANKLE QUATERNION : '+'  '+floattostr(Q.RealPart)+'  '+floattostr(Q.ImagPart.X)+'  '+floattostr(Q.ImagPart.Y)+'  '+floattostr(Q.ImagPart.Z));
 
-    Writeln(outputfile,' ');
-    Writeln(outputfile,'LEFT M MATRIX : '+'  '+floattostr(M.x.x)+'  '+floattostr(M.y.x)+'  '+floattostr(M.z.x));
-    Writeln(outputfile,'                  : '+'  '+floattostr(M.x.y)+'  '+floattostr(M.y.y)+'  '+floattostr(M.z.y));
-    Writeln(outputfile,'                  : '+'  '+floattostr(M.x.z)+'  '+floattostr(M.y.z)+'  '+floattostr(M.z.z));
-    Writeln(outputfile,' ');
-
-    Writeln(outputfile,' ');
-    Writeln(outputfile,'RIGHT SHANK MATRIX : '+'  '+floattostr(RShank.x.x)+'  '+floattostr(RShank.y.x)+'  '+floattostr(RShank.z.x));
-    Writeln(outputfile,'                  : '+'  '+floattostr(RShank.x.y)+'  '+floattostr(RShank.y.y)+'  '+floattostr(RShank.z.y));
-    Writeln(outputfile,'                  : '+'  '+floattostr(RShank.x.z)+'  '+floattostr(RShank.y.z)+'  '+floattostr(RShank.z.z));
-    Writeln(outputfile,' ');
-
     Rcenter:=vectorscale(vectoradd(vectoradd(RTOE[i],RMT5[i]),RHEE[i]),1/3);
     xaxis:=Vectornormalize(VectorSubtract(vectorscale(vectoradd(RMT5[i],RTOE[i]),0.5),RHEE[i]));
     zaxis:=Vectornormalize(VectorCrossProduct(xaxis,VectorSubtract(RTOE[i],RMT5[i])));
     yaxis:=VectorCrossProduct(zaxis,xaxis);
     M.X:=xaxis;M.Y:=yaxis;M.Z:=zaxis;M.W:=Rcenter;M.W.W:=1;
     InvertMatrix(RShank);
-    Writeln(outputfile,' ');
-    Writeln(outputfile,'RIGHT M MATRIX : '+'  '+floattostr(RShank.x.x)+'  '+floattostr(RShank.y.x)+'  '+floattostr(RShank.z.x)+'  '+floattostr(RShank.w.x));
-    Writeln(outputfile,'                  : '+'  '+floattostr(RShank.x.y)+'  '+floattostr(RShank.y.y)+'  '+floattostr(RShank.z.y)+'  '+floattostr(RShank.w.y));
-    Writeln(outputfile,'                  : '+'  '+floattostr(RShank.x.z)+'  '+floattostr(RShank.y.z)+'  '+floattostr(RShank.z.z)+'  '+floattostr(RShank.w.z));
-    Writeln(outputfile,'                  : '+'  '+floattostr(RShank.x.w)+'  '+floattostr(RShank.y.w)+'  '+floattostr(RShank.z.w)+'  '+floattostr(RShank.w.w));
-    Writeln(outputfile,' ');
     M:=MatrixMultiply(M,RShank);
     Q:=QuaternionFromMatrix(M);
     Writeln(outputfile,'RIGHT ANKLE QUATERNION : '+'  '+floattostr(Q.RealPart)+'  '+floattostr(Q.ImagPart.X)+'  '+floattostr(Q.ImagPart.Y)+'  '+floattostr(Q.ImagPart.Z));
@@ -1657,8 +1731,9 @@ begin
   ' dans l''encart "Knee Joint Centers". Les marqueurs VICON sont positionnés sur la peau, ils sont donc décalés sur'+
   ' l''axe de rotations des genoux pour les replacer aux centres des genoux."'
   +char(13)
-  +'5) cliquer sur "File Processing" pour sauvegarder les variables cinématiques de l''essai dans un fichier homonyme du fichier Mocap'
-  +' avec l''extension .ik'
+  +'5) cliquer sur "Compute Joint Angles" pour sauvegarder les variables cinématiques de l''essai dans un fichier homonyme du fichier Mocap'
+  +' avec l''extension .ik.  Cliquer sur ''Folder Processing'' pour effectuer l''analyse complète (calcul automatiques des centres d''articulations '
+  +' et sauvagarde des données) pour tous les fichiers MoCap présents dans le dossier.'
   +char(13)
   +'Cliquer sur "Display Lower limb''s Length" pour visualiser la longueur du membre de la jambe (cuisse ou tibia)'
   +'calculée à partir des centres de rotation optimisés (pelvis ou cheviles)';
@@ -1671,7 +1746,8 @@ begin
   +'4) In the "Knee Joint Centers" box, click on "Broyden-Fletcher-Golfarb-Shanno" to compute the rotation center shifts of the knees '+
   'along the pivot pins (the VICON markers are set on the skin then not exactly on the pin centers of the knees). This optimization computes the exact shift to move the marker in the center of the knee.'
   +char(13)
-  +'5) Click on  "File Processing" to compute the kinematics variables of the whole test and save it in a file with the extension .ik. Click on ''Folder Processing'' to process all the files present in the selected folder '
+  +'5) Click on  "Compute Joint Angles" to compute the kinematics variables of the whole test and save it in a file with the extension .ik. Click on ''Folder Processing'' to process all the files present in the selected folder. '+
+  'This means for each Mocap File in the folder, optimize all the Center positions and save the kinematics variables in the corrsponding output files.'
   +char(13)
   +'Click on "Display Lower limb''s Length" to visualize the variation of the leg''s lenght (shank body or thigh body) all along the experimental test and'
   +' given the set of coordinates for the rotation centers.';
@@ -1788,7 +1864,7 @@ var
   F_min : double;    { Function value at minimum }
   Det   : double;    { Determinant of hessian }
   I, J  : Integer;  { Loop variables }
-  v1,v2,v3,v4:GLVectorgeometry.tvector;
+
 begin
 
     OPT_OPt:=Option;

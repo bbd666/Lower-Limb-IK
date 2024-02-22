@@ -1,8 +1,9 @@
 object Form1: TForm1
-  Left = 62
+  Left = 78
   Height = 833
-  Top = 46
+  Top = 92
   Width = 1178
+  Caption = 'Lower Limbs Inverse Kinematics'
   ClientHeight = 833
   ClientWidth = 1178
   Color = clActiveCaption
@@ -13,7 +14,7 @@ object Form1: TForm1
     Left = 112
     Height = 23
     Top = 12
-    Width = 1040
+    Width = 448
     EditLabel.Height = 15
     EditLabel.Width = 89
     EditLabel.Caption = 'Input Mocap File'
@@ -26,7 +27,7 @@ object Form1: TForm1
   object GLSceneViewer1: TGLSceneViewer
     Left = 16
     Height = 368
-    Top = 48
+    Top = 40
     Width = 504
     Camera = GLCamera1
     Buffer.AmbientColor.Red = 0.200000002980232
@@ -243,7 +244,7 @@ object Form1: TForm1
         Visible = False
       end
       object LMPatellaButton: TButton
-        Left = 0
+        Left = 2
         Height = 25
         Top = 8
         Width = 192
@@ -568,9 +569,9 @@ object Form1: TForm1
     TabOrder = 8
   end
   object BitBtn1: TBitBtn
-    Left = 880
+    Left = 752
     Height = 29
-    Top = 728
+    Top = 608
     Width = 29
     Glyph.Data = {
       22050000424D2205000000000000360000002800000014000000150000000100
@@ -752,7 +753,8 @@ object Form1: TForm1
     Left = 512
     Height = 20
     Top = 432
-    Width = 32
+    Width = 40
+    Alignment = taCenter
     Color = clYellow
     Font.Height = -9
     ParentFont = False
@@ -761,12 +763,12 @@ object Form1: TForm1
     Text = '0'
   end
   object Panel5: TPanel
-    Left = 480
-    Height = 166
-    Top = 480
-    Width = 152
-    ClientHeight = 166
-    ClientWidth = 152
+    Left = 456
+    Height = 152
+    Top = 616
+    Width = 144
+    ClientHeight = 152
+    ClientWidth = 144
     TabOrder = 13
     object Panel1: TPanel
       Left = 8
@@ -808,7 +810,7 @@ object Form1: TForm1
       Left = 40
       Height = 136
       Top = 5
-      Width = 104
+      Width = 96
       AutoFill = True
       Caption = 'Display Options'
       ChildSizing.LeftRightSpacing = 6
@@ -820,7 +822,7 @@ object Form1: TForm1
       ChildSizing.Layout = cclLeftToRightThenTopToBottom
       ChildSizing.ControlsPerLine = 1
       ClientHeight = 116
-      ClientWidth = 100
+      ClientWidth = 92
       Color = clActiveCaption
       ParentBackground = False
       ParentFont = False
@@ -830,7 +832,7 @@ object Form1: TForm1
         Left = 6
         Height = 26
         Top = 6
-        Width = 88
+        Width = 80
         Caption = 'Left Thigh'
         Checked = True
         Color = clActiveCaption
@@ -845,7 +847,7 @@ object Form1: TForm1
         Left = 6
         Height = 26
         Top = 32
-        Width = 88
+        Width = 80
         Caption = 'Right Thigh'
         Checked = True
         Color = clMenuText
@@ -859,7 +861,7 @@ object Form1: TForm1
         Left = 6
         Height = 26
         Top = 58
-        Width = 88
+        Width = 80
         Caption = 'Left Shank'
         Checked = True
         OnChange = DisplayOptionChange
@@ -870,7 +872,7 @@ object Form1: TForm1
         Left = 6
         Height = 26
         Top = 84
-        Width = 88
+        Width = 80
         Caption = 'Right Shank'
         Checked = True
         OnChange = DisplayOptionChange
@@ -880,43 +882,59 @@ object Form1: TForm1
     end
   end
   object GroupBox13: TGroupBox
-    Left = 687
+    Left = 672
     Height = 105
-    Top = 588
+    Top = 656
     Width = 185
     Caption = 'Inverse Kinematics Analysis'
     ClientHeight = 85
     ClientWidth = 181
     TabOrder = 14
-    object IK_Analysis: TButton
-      Left = 32
+    object Edit_Run_Joint_Angles: TButton
+      Left = 24
       Height = 25
       Top = 8
-      Width = 126
-      Caption = 'File Processing'
+      Width = 136
+      Caption = 'Compute Joint Angles'
       Font.Style = [fsBold]
-      OnClick = IK_AnalysisClick
+      OnClick = Edit_Run_Joint_AnglesClick
       ParentFont = False
       TabOrder = 0
     end
-    object Button2: TButton
-      Left = 31
+    object Edit_Folder_Processing: TButton
+      Left = 24
       Height = 25
       Top = 48
-      Width = 127
+      Width = 136
       Caption = 'Folder Processing'
       Font.Style = [fsBold]
+      OnClick = Edit_Folder_ProcessingClick
       ParentFont = False
       TabOrder = 1
     end
   end
+  object FolderEdit: TLabeledEdit
+    Left = 736
+    Height = 23
+    Top = 12
+    Width = 400
+    EditLabel.Height = 15
+    EditLabel.Width = 102
+    EditLabel.Caption = 'MoCap Data Folder'
+    EditLabel.ParentColor = False
+    LabelPosition = lpLeft
+    ReadOnly = True
+    TabOrder = 15
+    OnDblClick = FolderEditDblClick
+  end
   object OpenDialog1: TOpenDialog
-    Left = 65152
-    Top = 80
+    Filter = '*.csv|*.csv'
+    Left = 696
+    Top = 464
   end
   object GLScene1: TGLScene
-    Left = 65040
-    Top = 448
+    Left = 608
+    Top = 464
     object GLDummyCube2: TGLDummyCube
       CubeSize = 1
       EdgeColor.Red = 1
@@ -2012,13 +2030,17 @@ object Form1: TForm1
   object GLCadencer1: TGLCadencer
     Scene = GLScene1
     OnProgress = GLCadencer1Progress
-    Left = 65216
+    Left = 656
     Top = 528
   end
   object GLWindowsBitmapFont1: TGLWindowsBitmapFont
     Font.Color = clWhite
     Font.Height = -9
-    Left = 65096
-    Top = 504
+    Left = 552
+    Top = 528
+  end
+  object SelectDirectoryDialog1: TSelectDirectoryDialog
+    Left = 784
+    Top = 544
   end
 end
