@@ -96,7 +96,7 @@ object Form1: TForm1
   object GroupBox4: TGroupBox
     Left = 728
     Height = 407
-    Top = 48
+    Top = 47
     Width = 217
     Caption = 'Hip Joint Centers'
     ClientHeight = 387
@@ -567,21 +567,10 @@ object Form1: TForm1
     ParentFont = False
     TabOrder = 8
   end
-  object IK_Analysis: TButton
-    Left = 728
-    Height = 25
-    Top = 584
-    Width = 174
-    Caption = 'Inverse Kinematics Analysis'
-    Font.Style = [fsBold]
-    OnClick = IK_AnalysisClick
-    ParentFont = False
-    TabOrder = 10
-  end
   object BitBtn1: TBitBtn
-    Left = 792
+    Left = 880
     Height = 29
-    Top = 616
+    Top = 728
     Width = 29
     Glyph.Data = {
       22050000424D2205000000000000360000002800000014000000150000000100
@@ -630,7 +619,7 @@ object Form1: TForm1
     GlyphShowMode = gsmAlways
     Margin = 1
     OnClick = BitBtn1Click
-    TabOrder = 11
+    TabOrder = 10
   end
   object Label1: TLabel
     Left = 16
@@ -651,7 +640,7 @@ object Form1: TForm1
     Caption = 'Knee Joint Centers'
     ClientHeight = 300
     ClientWidth = 213
-    TabOrder = 12
+    TabOrder = 11
     object GroupBox10: TGroupBox
       Left = 16
       Height = 64
@@ -768,7 +757,7 @@ object Form1: TForm1
     Font.Height = -9
     ParentFont = False
     ReadOnly = True
-    TabOrder = 13
+    TabOrder = 12
     Text = '0'
   end
   object Panel5: TPanel
@@ -778,7 +767,7 @@ object Form1: TForm1
     Width = 152
     ClientHeight = 166
     ClientWidth = 152
-    TabOrder = 14
+    TabOrder = 13
     object Panel1: TPanel
       Left = 8
       Height = 18
@@ -888,6 +877,37 @@ object Form1: TForm1
         State = cbChecked
         TabOrder = 3
       end
+    end
+  end
+  object GroupBox13: TGroupBox
+    Left = 687
+    Height = 105
+    Top = 652
+    Width = 185
+    Caption = 'Inverse Kinematics Analysis'
+    ClientHeight = 85
+    ClientWidth = 181
+    TabOrder = 14
+    object IK_Analysis: TButton
+      Left = 32
+      Height = 25
+      Top = 8
+      Width = 126
+      Caption = 'File Processing'
+      Font.Style = [fsBold]
+      OnClick = IK_AnalysisClick
+      ParentFont = False
+      TabOrder = 0
+    end
+    object Button2: TButton
+      Left = 31
+      Height = 25
+      Top = 48
+      Width = 127
+      Caption = 'Folder Processing'
+      Font.Style = [fsBold]
+      ParentFont = False
+      TabOrder = 1
     end
   end
   object OpenDialog1: TOpenDialog

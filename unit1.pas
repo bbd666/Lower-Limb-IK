@@ -25,12 +25,14 @@ type
   TForm1 = class(TForm)
     BitBtn1: TBitBtn;
     Button1: TButton;
+    Button2: TButton;
     CBLTH: TCheckBox;
     CBRTH: TCheckBox;
     CBLSH: TCheckBox;
     CBRSH: TCheckBox;
     CheckBox11: TCheckBox;
     CheckGroup2: TCheckGroup;
+    GroupBox13: TGroupBox;
     IKRFoot_ref: TGLDummyCube;
     IKLFoot_ref: TGLDummyCube;
     IKRTibia_ref: TGLDummyCube;
@@ -510,6 +512,7 @@ begin
        centers_updated:=FALSE;
        scale_bones;
      end;
+
      update_pelvis_Frame;
      update_LFoot_Frame;
      update_RFoot_Frame;
@@ -528,8 +531,9 @@ begin
 
      if CheckBox4.Checked then Update_Body_Lines;
 
-  //   if checkbox11.Checked then
+     if checkbox11.Checked then
      begin
+
       IKHip_ref.Position:=pelvis_center.Position;
       IKHip_ref.Direction:=pelvis_center.direction;
       IKHip_ref.up:=pelvis_center.up;
@@ -549,7 +553,7 @@ begin
       RShank.Z:=Vectornormalize(VectorCrossProduct(RShank.X,RShank.Y));
 
 
-      //chgt de coords GLDummyCube2 -> GLDummyCube1
+      //chgt de coords GLDummyCube2 -> GLDummyCube1   :  Y1=-Z2 ; Z1=Y2 ; + Shift Camera
       Temp:=LThigh.X.Y;LThigh.X.Y:=-LThigh.X.Z;LThigh.X.Z:=Temp;
       Temp:=LThigh.Y.Y;LThigh.Y.Y:=-LThigh.Y.Z;LThigh.Y.Z:=Temp;
       Temp:=LThigh.Z.Y;LThigh.Z.Y:=-LThigh.Z.Z;LThigh.Z.Z:=Temp;
@@ -618,6 +622,7 @@ begin
 
    CheckBoxChange(self);
    frame_nb_edit.Text:=inttostr(Trackbar1.Position);
+
 end;
 
 procedure TForm1.Update_Body_Lines;
@@ -1053,7 +1058,11 @@ begin
     yaxis:=Vectornormalize(VectorSubtract(LASI[i],RASI[i]));
     zaxis:=Vectornormalize(vectorscale(VectorCrossProduct(yaxis,VectorSubtract(LASI[i],Root[i])),-1));
     xaxis:=VectorCrossProduct(yaxis,zaxis);
-    result.X:=xaxis;result.Y:=yaxis;result.Z:=zaxis;result.W:=center;
+    result.X:=xaxis;
+    result.Y:=yaxis;
+    result.Z:=zaxis;
+    result.W:=center;
+    result.W.w:=1;
 end;
 
 Function calc_dist2Patellas(i:integer;v1,v2:GLVectorgeometry.tvector):Double;
@@ -1485,10 +1494,11 @@ var
   v1,v2,v3,v4:GLVectorgeometry.tvector;
 
 begin
- v1:=vectormake(strtofloat(L_rot_x.Text),strtofloat(L_rot_y.Text),strtofloat(L_rot_z.Text));
- v2:=vectormake(strtofloat(R_rot_x.Text),strtofloat(R_rot_y.Text),strtofloat(R_rot_z.Text));
- v3:=vectormake(strtofloat(L_Ankle_x.Text),strtofloat(L_Ankle_y.Text),strtofloat(L_Ankle_z.Text));
- v4:=vectormake(strtofloat(R_Ankle_x.Text),strtofloat(R_Ankle_y.Text),strtofloat(R_Ankle_z.Text));
+
+  v1:=vectormake(strtofloat(L_rot_x.Text),strtofloat(L_rot_y.Text),strtofloat(L_rot_z.Text));
+  v2:=vectormake(strtofloat(R_rot_x.Text),strtofloat(R_rot_y.Text),strtofloat(R_rot_z.Text));
+  v3:=vectormake(strtofloat(L_Ankle_x.Text),strtofloat(L_Ankle_y.Text),strtofloat(L_Ankle_z.Text));
+  v4:=vectormake(strtofloat(R_Ankle_x.Text),strtofloat(R_Ankle_y.Text),strtofloat(R_Ankle_z.Text));
 
   //MAJ des positions des articulations calculées.
   Fill_Joints_Center_Tabs;
@@ -1496,6 +1506,7 @@ begin
   setlength(LKN,length(root));
   setlength(RKN,length(root));
 
+  //Calcul des positions réelles des genoux
   for i:=0 to high(root) do
   begin
    LKN[i]:=Build_Shifted_Knee(i,strtofloat(L_Knee_Shift.Text),TSIDE.LEFT);
@@ -1510,10 +1521,13 @@ begin
   Writeln(outputfile,'LEFT ANKLE FRAME : Center=Barycenter(LTOE,LMT5,LHEE); X=Center(LMT5,LTOE)-LHEE; Z=(LTOE-LMT5)^X; Y=Z^X');
   Writeln(outputfile,'RIGHT ANKLE FRAME : Center=Barycenter(RTOE,RMT5,RHEE); X=Center(RMT5,RTOE)-RHEE; Z=X^(RTOE-RMT5); Y=Z^X');
   Writeln(outputfile,'');
-  Writeln(outputfile,'LEFT FEMORAL HEAD POSITION (LOCAL COORD / HIP FRAME) : '+'  '+floattostrf(v1.X,fffixed,6,4)+'  '+floattostrf(v1.Y,fffixed,6,4)+'  '+floattostrf(v1.Z,fffixed,6,4));
-  Writeln(outputfile,'RIGHT FEMORAL HEAD POSITION (LOCAL COORD / HIP FRAME) : '+'  '+floattostrf(v2.X,fffixed,6,4)+'  '+floattostrf(v2.Y,fffixed,6,4)+'  '+floattostrf(v2.Z,fffixed,6,4));
-  Writeln(outputfile,'LEFT ANKLE POSITION (LOCAL COORD/ LEFT ANKLE FRAME) : '+'  '+floattostrf(v3.X,fffixed,6,4)+'  '+floattostrf(v3.Y,fffixed,6,4)+'  '+floattostrf(v3.Z,fffixed,6,4));
-  Writeln(outputfile,'RIGHT ANKLE POSITION (LOCAL COORD/ RIGHT ANKLE FRAME) : '+'  '+floattostrf(v4.X,fffixed,6,4)+'  '+floattostrf(v4.Y,fffixed,6,4)+'  '+floattostrf(v4.Z,fffixed,6,4));
+  Writeln(outputfile,'LEFT FEMORAL HEAD POSITION (LOCAL COORD / HIP FRAME) : '+floattostrf(v1.X,fffixed,6,4)+'  '+floattostrf(v1.Y,fffixed,6,4)+'  '+floattostrf(v1.Z,fffixed,6,4));
+  Writeln(outputfile,'RIGHT FEMORAL HEAD POSITION (LOCAL COORD / HIP FRAME) : '+floattostrf(v2.X,fffixed,6,4)+'  '+floattostrf(v2.Y,fffixed,6,4)+'  '+floattostrf(v2.Z,fffixed,6,4));
+  Writeln(outputfile,'LEFT ANKLE POSITION (LOCAL COORD/ LEFT ANKLE FRAME) : '+floattostrf(v3.X,fffixed,6,4)+'  '+floattostrf(v3.Y,fffixed,6,4)+'  '+floattostrf(v3.Z,fffixed,6,4));
+  Writeln(outputfile,'RIGHT ANKLE POSITION (LOCAL COORD/ RIGHT ANKLE FRAME) : '+floattostrf(v4.X,fffixed,6,4)+'  '+floattostrf(v4.Y,fffixed,6,4)+'  '+floattostrf(v4.Z,fffixed,6,4));
+  Writeln(outputfile,'');
+  Writeln(outputfile,'LEFT KNEE SHIFT (ALONG KNEE PIVOT JOINT) : '+L_Knee_Shift.Text);
+  Writeln(outputfile,'RIGHT KNEE SHIFT (ALONG KNEE PIVOT JOINT) : '+R_Knee_Shift.Text);
   Writeln(outputfile,'');
 
   LEN_LSH:=0;
@@ -1529,7 +1543,7 @@ begin
     LEN_RSH:=moyenne+VectorLength(vectorsubtract(RKN[i],RAnkl_TAB[i]));
   end;
 
-  //Calcul des longueurs de fémurs
+  //Calcul des longueurs
   //Fémur Gauche
   Writeln(outputfile,'LEFT FEMOR LENGTH : '+'  '+floattostrf(LEN_LTH,fffixed,6,4));
   //Fémur Droit
@@ -1566,10 +1580,20 @@ begin
     InvertMatrix(M);
     LThigh:=MatrixMultiply(LThigh,M);
     Q:=QuaternionFromMatrix(LThigh);
+    Writeln(outputfile,' ');
+    Writeln(outputfile,'LEFT THIGH MATRIX : '+'  '+floattostr(LThigh.x.x)+'  '+floattostr(LThigh.y.x)+'  '+floattostr(LThigh.z.x));
+    Writeln(outputfile,'                  : '+'  '+floattostr(LThigh.x.y)+'  '+floattostr(LThigh.y.y)+'  '+floattostr(LThigh.z.y));
+    Writeln(outputfile,'                  : '+'  '+floattostr(LThigh.x.z)+'  '+floattostr(LThigh.y.z)+'  '+floattostr(LThigh.z.z));
+    Writeln(outputfile,' ');
     Writeln(outputfile,'LEFT THIGH QUATERNION : '+'  '+floattostr(Q.RealPart)+'  '+floattostr(Q.ImagPart.X)+'  '+floattostr(Q.ImagPart.Y)+'  '+floattostr(Q.ImagPart.Z));
 
     RThigh:=MatrixMultiply(RThigh,M);
     Q:=QuaternionFromMatrix(RThigh);
+    Writeln(outputfile,' ');
+    Writeln(outputfile,'RIGHT THIGH MATRIX : '+'  '+floattostr(RThigh.x.x)+'  '+floattostr(RThigh.y.x)+'  '+floattostr(RThigh.z.x));
+    Writeln(outputfile,'                  : '+'  '+floattostr(RThigh.x.y)+'  '+floattostr(RThigh.y.y)+'  '+floattostr(RThigh.z.y));
+    Writeln(outputfile,'                  : '+'  '+floattostr(RThigh.x.z)+'  '+floattostr(RThigh.y.z)+'  '+floattostr(RThigh.z.z));
+    Writeln(outputfile,' ');
     Writeln(outputfile,'RIGHT THIGH QUATERNION : '+'  '+floattostr(Q.RealPart)+'  '+floattostr(Q.ImagPart.X)+'  '+floattostr(Q.ImagPart.Y)+'  '+floattostr(Q.ImagPart.Z));
 
     Writeln(outputfile,'LEFT KNEE ANGLE : '+floattostr(LKNEE_ANGLE));
@@ -1579,18 +1603,36 @@ begin
     xaxis:=Vectornormalize(VectorSubtract(vectorscale(vectoradd(LMT5[i],LTOE[i]),0.5),LHEE[i]));
     zaxis:=Vectornormalize(VectorCrossProduct(VectorSubtract(LTOE[i],LMT5[i]),xaxis));
     yaxis:=VectorCrossProduct(zaxis,xaxis);
-    M.X:=xaxis;M.Y:=yaxis;M.Z:=zaxis;M.W:=Lcenter;
+    M.X:=xaxis;M.Y:=yaxis;M.Z:=zaxis;M.W:=Lcenter;M.W.W:=1;
     InvertMatrix(LShank);
     M:=MatrixMultiply(M,LShank);
     Q:=QuaternionFromMatrix(M);
     Writeln(outputfile,'LEFT ANKLE QUATERNION : '+'  '+floattostr(Q.RealPart)+'  '+floattostr(Q.ImagPart.X)+'  '+floattostr(Q.ImagPart.Y)+'  '+floattostr(Q.ImagPart.Z));
 
+    Writeln(outputfile,' ');
+    Writeln(outputfile,'LEFT M MATRIX : '+'  '+floattostr(M.x.x)+'  '+floattostr(M.y.x)+'  '+floattostr(M.z.x));
+    Writeln(outputfile,'                  : '+'  '+floattostr(M.x.y)+'  '+floattostr(M.y.y)+'  '+floattostr(M.z.y));
+    Writeln(outputfile,'                  : '+'  '+floattostr(M.x.z)+'  '+floattostr(M.y.z)+'  '+floattostr(M.z.z));
+    Writeln(outputfile,' ');
+
+    Writeln(outputfile,' ');
+    Writeln(outputfile,'RIGHT SHANK MATRIX : '+'  '+floattostr(RShank.x.x)+'  '+floattostr(RShank.y.x)+'  '+floattostr(RShank.z.x));
+    Writeln(outputfile,'                  : '+'  '+floattostr(RShank.x.y)+'  '+floattostr(RShank.y.y)+'  '+floattostr(RShank.z.y));
+    Writeln(outputfile,'                  : '+'  '+floattostr(RShank.x.z)+'  '+floattostr(RShank.y.z)+'  '+floattostr(RShank.z.z));
+    Writeln(outputfile,' ');
+
     Rcenter:=vectorscale(vectoradd(vectoradd(RTOE[i],RMT5[i]),RHEE[i]),1/3);
     xaxis:=Vectornormalize(VectorSubtract(vectorscale(vectoradd(RMT5[i],RTOE[i]),0.5),RHEE[i]));
     zaxis:=Vectornormalize(VectorCrossProduct(xaxis,VectorSubtract(RTOE[i],RMT5[i])));
     yaxis:=VectorCrossProduct(zaxis,xaxis);
-    M.X:=xaxis;M.Y:=yaxis;M.Z:=zaxis;M.W:=Rcenter;
+    M.X:=xaxis;M.Y:=yaxis;M.Z:=zaxis;M.W:=Rcenter;M.W.W:=1;
     InvertMatrix(RShank);
+    Writeln(outputfile,' ');
+    Writeln(outputfile,'RIGHT M MATRIX : '+'  '+floattostr(RShank.x.x)+'  '+floattostr(RShank.y.x)+'  '+floattostr(RShank.z.x)+'  '+floattostr(RShank.w.x));
+    Writeln(outputfile,'                  : '+'  '+floattostr(RShank.x.y)+'  '+floattostr(RShank.y.y)+'  '+floattostr(RShank.z.y)+'  '+floattostr(RShank.w.y));
+    Writeln(outputfile,'                  : '+'  '+floattostr(RShank.x.z)+'  '+floattostr(RShank.y.z)+'  '+floattostr(RShank.z.z)+'  '+floattostr(RShank.w.z));
+    Writeln(outputfile,'                  : '+'  '+floattostr(RShank.x.w)+'  '+floattostr(RShank.y.w)+'  '+floattostr(RShank.z.w)+'  '+floattostr(RShank.w.w));
+    Writeln(outputfile,' ');
     M:=MatrixMultiply(M,RShank);
     Q:=QuaternionFromMatrix(M);
     Writeln(outputfile,'RIGHT ANKLE QUATERNION : '+'  '+floattostr(Q.RealPart)+'  '+floattostr(Q.ImagPart.X)+'  '+floattostr(Q.ImagPart.Y)+'  '+floattostr(Q.ImagPart.Z));
@@ -1605,31 +1647,31 @@ var
 begin
   s:='1) charger un fichier de Motion Capture VICON au format .csv en double cliquant dans la boîte d''édition "Input Mocap File"'
   +char(13)
-  +'2) Déterminer les positions des têtes de fémur : cliquer sur "Genetic Algorithm" ou sur "Broyden-Fletcher-Golfarb-Shanno" '+
-  ' dans l''encart "Hip Joint Centers" pour choisir l''une des deux méthodes proposées'
+  +'2) Déterminer les positions des têtes de fémur : cliquer sur "Broyden-Fletcher-Golfarb-Shanno" '+
+  ' dans l''encart "Hip Joint Centers"'
   +char(13)
-  +'3) Déterminer les positions des chevilles : cliquer sur "Genetic Algorithm" ou sur "Broyden-Fletcher-Golfarb-Shanno" '+
-  ' dans l''encart "Ankle Centers" pour choisir l''une des deux méthodes proposées'
+  +'3) Déterminer les positions des chevilles : cliquer sur "Broyden-Fletcher-Golfarb-Shanno" '+
+  ' dans l''encart "Ankle Centers"'
   +char(13)
-  +'4) Déterminer les positions réelles des genoux : cliquer sur "Genetic Algorithm" ou sur "Broyden-Fletcher-Golfarb-Shanno" '+
-  ' dans l''encart "Knee Joint Centers" pour choisir l''une des deux méthodes proposées. Les marqueurs VICON sont positionnés sur la peau, ils sont donc décalés sur'+
-  ' l''axe de rotations des genoux. choisir l''image de référence pour réaliser ce calcul d''optimisation dans la boîte de saisie "Frame Index Ref"'
+  +'4) Déterminer les positions réelles des genoux : cliquer sur "Broyden-Fletcher-Golfarb-Shanno" '+
+  ' dans l''encart "Knee Joint Centers". Les marqueurs VICON sont positionnés sur la peau, ils sont donc décalés sur'+
+  ' l''axe de rotations des genoux pour les replacer aux centres des genoux."'
   +char(13)
-  +'5) cliquer sur "Inverse Kinematics Analysis" pour sauvegarder les variables cinématiques de l''essai dans un fichier homonyme du fichier Mocap'
+  +'5) cliquer sur "File Processing" pour sauvegarder les variables cinématiques de l''essai dans un fichier homonyme du fichier Mocap'
   +' avec l''extension .ik'
   +char(13)
   +'Cliquer sur "Display Lower limb''s Length" pour visualiser la longueur du membre de la jambe (cuisse ou tibia)'
   +'calculée à partir des centres de rotation optimisés (pelvis ou cheviles)';
   s:='1) Load a VICON MoCap file by double-clicking the edit box named "Input Mocap File"'
   +char(13)
-  +'2) In the "Ankle Centers" box, click on "Genetic Algorithm" or "Broyden-Fletcher-Golfarb-Shanno" to compute the rotation centers of the hip. They are 2 different methods of optimization.'
+  +'2) In the "Ankle Centers" box, click on "Broyden-Fletcher-Golfarb-Shanno" to compute the rotation centers of the hip.'
   +char(13)
-  +'3) In the "Hip Joint Centers" box, click on "Genetic Algorithm" or "Broyden-Fletcher-Golfarb-Shanno" to compute the rotation centers of the ankles'
+  +'3) In the "Hip Joint Centers" box, click on "Broyden-Fletcher-Golfarb-Shanno" to compute the rotation centers of the ankles'
   +char(13)
-  +'4) In the "Knee Joint Centers" box, click on "Genetic Algorithm" or "Broyden-Fletcher-Golfarb-Shanno" to compute the rotation center shifts of the knees '+
-  'along the pivot pins (the VICON markers are set on the skin then not exactly on the pin centers of the knees). Select the frame index as reference for the computation'
+  +'4) In the "Knee Joint Centers" box, click on "Broyden-Fletcher-Golfarb-Shanno" to compute the rotation center shifts of the knees '+
+  'along the pivot pins (the VICON markers are set on the skin then not exactly on the pin centers of the knees). This optimization computes the exact shift to move the marker in the center of the knee.'
   +char(13)
-  +'5) Click on  "Inverse Kinematics Analysis" to compute the kinematics variables of the whole test and save it in a file with the extension .ik.'
+  +'5) Click on  "File Processing" to compute the kinematics variables of the whole test and save it in a file with the extension .ik. Click on ''Folder Processing'' to process all the files present in the selected folder '
   +char(13)
   +'Click on "Display Lower limb''s Length" to visualize the variation of the leg''s lenght (shank body or thigh body) all along the experimental test and'
   +' given the set of coordinates for the rotation centers.';
