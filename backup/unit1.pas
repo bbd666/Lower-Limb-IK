@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, ComCtrls,
   GLScene, GLViewer, GLCadencer, GLHUDObjects, GLBitmapFont, GLWindowsFont,
   GLObjects, GLVectortypes, GLVectorGeometry, Types, LCLType, StdCtrls, Buttons,
-  TAGraph, TASeries, GlKeyboard, GLVectorFileObjects, DiffEvol,
+  TAGraph, TASeries, GlKeyboard, GLVectorFileObjects,
   Inifiles, utypes,math,
   ubfgs,
   glfile3ds,glfileobj,
@@ -170,6 +170,8 @@ type
     MoCapFileEdit: TLabeledEdit;
     OpenDialog1: TOpenDialog;
     R_Ankle_z: TLabeledEdit;
+    ToggleBox1: TToggleBox;
+    ToggleBox2: TToggleBox;
     TrackBar1: TTrackBar;
     procedure BitBtn1MouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
@@ -210,6 +212,8 @@ type
     procedure R_rot_xChange(Sender: TObject);
     procedure R_rot_yChange(Sender: TObject);
     procedure R_rot_zChange(Sender: TObject);
+    procedure ToggleBox1Change(Sender: TObject);
+    procedure ToggleBox2Change(Sender: TObject);
     procedure TrackBar1Change(Sender: TObject);
   private
     procedure init_EditBoxes;
@@ -239,7 +243,7 @@ var
   OPT_OPT:Integer;      //Option d'optimisation
   NVAR:Integer;
   centers_updated:boolean=TRUE;
-  Folder_out_Name:string;
+  Folder_out_Name,Start_Folder:string;
 
   Function Func(Population :TVector):double;
   Function calc_localFrame_Knee(i:integer;side:TSIDE):GLVectorgeometry.TMatrix;
@@ -289,7 +293,6 @@ end;
 procedure TForm1.load_ini;
 var
      config:tinifile;
-     i:integer;
      Mrkr_rad,Knee_Mrkr_rad,Center_size:double;
 
 begin
@@ -362,7 +365,7 @@ end;
 procedure TForm1.save_ini(Option:Integer);
 var
      config:tinifile;
-     i:integer;
+
 begin
    config := Tinifile.Create('config.ini');
 
@@ -417,6 +420,54 @@ begin
      end;
 end;
 
+procedure TForm1.L_Ankle_xChange(Sender: TObject);
+var
+  out:double;
+begin
+    if TryStrToFloat(Tlabelededit(Sender).text,out) then L_Ankle.position.x:=out;
+    centers_updated:=TRUE;
+end;
+
+procedure TForm1.L_Ankle_yChange(Sender: TObject);
+var
+  out:double;
+begin
+    if TryStrToFloat(Tlabelededit(Sender).text,out) then L_Ankle.position.y:=out;
+    centers_updated:=TRUE;
+end;
+
+procedure TForm1.L_Ankle_zChange(Sender: TObject);
+var
+  out:double;
+begin
+    if TryStrToFloat(Tlabelededit(Sender).text,out) then L_Ankle.position.z:=out;
+    centers_updated:=TRUE;
+end;
+
+procedure TForm1.L_rot_xChange(Sender: TObject);
+var
+  out:double;
+begin
+    if TryStrToFloat(Tlabelededit(Sender).text,out) then L_rot.position.x:=out;
+    centers_updated:=TRUE;
+end;
+
+procedure TForm1.L_rot_yChange(Sender: TObject);
+var
+  out:double;
+begin
+    if TryStrToFloat(Tlabelededit(Sender).text,out) then L_rot.position.y:=out;
+    centers_updated:=TRUE;
+end;
+
+procedure TForm1.L_rot_zChange(Sender: TObject);
+var
+  out:double;
+begin
+    if TryStrToFloat(Tlabelededit(Sender).text,out) then L_rot.position.z:=out;
+    centers_updated:=TRUE;
+end;
+
 procedure TForm1.R_Ankle_xChange(Sender: TObject);
 var
   out:double;
@@ -465,11 +516,30 @@ begin
     centers_updated:=TRUE;
 end;
 
+procedure TForm1.ToggleBox1Change(Sender: TObject);
+begin
+ L_rot_x.text:='0';
+ L_rot_y.text:='0';
+ L_rot_z.text:='0';
+ R_rot_x.text:='0';
+ R_rot_y.text:='0';
+ R_rot_z.text:='0';
+end;
+
+procedure TForm1.ToggleBox2Change(Sender: TObject);
+begin
+ L_Ankle_x.text:='0';
+ L_Ankle_y.text:='0';
+ L_Ankle_z.text:='0';
+ R_Ankle_x.text:='0';
+ R_Ankle_y.text:='0';
+ R_Ankle_z.text:='0';
+end;
+
 procedure TForm1.TrackBar1Change(Sender: TObject);
 var
   M,LShank,RShank,LThigh,RThigh:GLVectorgeometry.Tmatrix;
   temp:double;
-  s:TSIDE;
 
 begin
    if  nb_blocs=Trackbar1.max+1 then
@@ -729,6 +799,8 @@ begin
     GLFoot_R.Scale.AsVector:=Vectormake(0.0,0.0,0.0);
     GLFoot_L.Scale.AsVector:=Vectormake(0.0,0.0,0.0);
     GLhip.Scale.AsVector:=Vectormake(0.0,0.0,0.0);
+
+    Start_Folder:=ExtractFilePath(application.ExeName);
 end;
 
 procedure TForm1.scale_bones;
@@ -862,54 +934,6 @@ begin
       BFGS_Opt(1);
       TrackBar1Change(self);
     end;
-end;
-
-procedure TForm1.L_Ankle_xChange(Sender: TObject);
-var
-  out:double;
-begin
-    if TryStrToFloat(Tlabelededit(Sender).text,out) then L_Ankle.position.x:=out;
-    centers_updated:=TRUE;
-end;
-
-procedure TForm1.L_Ankle_yChange(Sender: TObject);
-var
-  out:double;
-begin
-    if TryStrToFloat(Tlabelededit(Sender).text,out) then L_Ankle.position.y:=out;
-    centers_updated:=TRUE;
-end;
-
-procedure TForm1.L_Ankle_zChange(Sender: TObject);
-var
-  out:double;
-begin
-    if TryStrToFloat(Tlabelededit(Sender).text,out) then L_Ankle.position.z:=out;
-    centers_updated:=TRUE;
-end;
-
-procedure TForm1.L_rot_xChange(Sender: TObject);
-var
-  out:double;
-begin
-    if TryStrToFloat(Tlabelededit(Sender).text,out) then L_rot.position.x:=out;
-    centers_updated:=TRUE;
-end;
-
-procedure TForm1.L_rot_yChange(Sender: TObject);
-var
-  out:double;
-begin
-    if TryStrToFloat(Tlabelededit(Sender).text,out) then L_rot.position.y:=out;
-    centers_updated:=TRUE;
-end;
-
-procedure TForm1.L_rot_zChange(Sender: TObject);
-var
-  out:double;
-begin
-    if TryStrToFloat(Tlabelededit(Sender).text,out) then L_rot.position.z:=out;
-    centers_updated:=TRUE;
 end;
 
 procedure TForm1.Load_Exp_marker_Coords(Sender: TObject);
@@ -1315,9 +1339,9 @@ begin
    Lineseries3.Clear;
    Lineseries4.Clear;
 
-   for i:=0 to High(Root) do Lineseries1.AddXY(i,1000*vectorlength(vectorsubtract(LRot_TAB[i],LKN[i])),'',clred);
-   for i:=0 to High(Root) do Lineseries2.AddXY(i,1000*vectorlength(vectorsubtract(RRot_TAB[i],RKN[i])),'',clblack);
-   for i:=0 to High(Root) do Lineseries3.AddXY(i,1000*vectorlength(vectorsubtract(LAnkl_TAB[i],LKN[i])),'',clgreen);
+   for i:=0 to High(Root) do Lineseries1.AddXY(i,1000*vectorlength(vectorsubtract(LRot_TAB[i],LKN[i])),'',clLime);
+   for i:=0 to High(Root) do Lineseries2.AddXY(i,1000*vectorlength(vectorsubtract(RRot_TAB[i],RKN[i])),'',clAqua);
+   for i:=0 to High(Root) do Lineseries3.AddXY(i,1000*vectorlength(vectorsubtract(LAnkl_TAB[i],LKN[i])),'',clFuchsia);
    for i:=0 to High(Root) do Lineseries4.AddXY(i,1000*vectorlength(vectorsubtract(RAnkl_TAB[i],RKN[i])),'',clblue);
 
    Lineseries1.Active:=CBLTH.Checked;
@@ -1493,7 +1517,7 @@ begin
   end;
 
   if Folder_out_Name='' then
-  nom_ik:=ChangeFileExt(filename,'.ik')
+  nom_ik:=Start_Folder+extractfilename(ChangeFileExt(filename,'.ik'))
   else
   nom_ik:=Folder_out_Name+extractfilename(ChangeFileExt(filename,'.ik'));
 
@@ -1525,6 +1549,11 @@ begin
     LEN_LSH:=LEN_LSH+VectorLength(vectorsubtract(LKN[i],LAnkl_TAB[i]));
     LEN_RSH:=LEN_RSH+VectorLength(vectorsubtract(RKN[i],RAnkl_TAB[i]));
   end;
+
+  LEN_LTH:=LEN_LTH/Length(root);
+  LEN_RTH:=LEN_RTH/Length(root);
+  LEN_LSH:=LEN_LSH/Length(root);
+  LEN_RSH:=LEN_RSH/Length(root);
 
   //Calcul des longueurs
   //Fémur Gauche
@@ -1756,12 +1785,18 @@ begin
 end;
 
 procedure TForm1.L_Knee_ShiftChange(Sender: TObject);
+var
+  out:double;
 begin
+   if not(TryStrToFloat(Tlabelededit(Sender).text,out)) then L_Knee_Shift.Text:='0';
       centers_updated:=TRUE;
 end;
 
 procedure TForm1.R_Knee_ShiftChange(Sender: TObject);
+var
+  out:double;
 begin
+   if not(TryStrToFloat(Tlabelededit(Sender).text,out)) then R_Knee_Shift.Text:='0';
       centers_updated:=TRUE;
 end;
 

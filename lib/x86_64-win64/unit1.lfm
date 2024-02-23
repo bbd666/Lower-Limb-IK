@@ -1,7 +1,7 @@
 object Form1: TForm1
-  Left = 78
+  Left = 103
   Height = 833
-  Top = 92
+  Top = 74
   Width = 1178
   Caption = 'Lower Limbs Inverse Kinematics'
   ClientHeight = 833
@@ -83,12 +83,13 @@ object Form1: TForm1
     )
     Title.Visible = True
     object LineSeries1: TLineSeries
-      LinePen.Color = clRed
+      LinePen.Color = clLime
     end
     object LineSeries2: TLineSeries
+      LinePen.Color = clAqua
     end
     object LineSeries3: TLineSeries
-      LinePen.Color = clLime
+      LinePen.Color = clFuchsia
     end
     object LineSeries4: TLineSeries
       LinePen.Color = clBlue
@@ -253,6 +254,17 @@ object Form1: TForm1
         ParentFont = False
         TabOrder = 1
       end
+      object ToggleBox1: TToggleBox
+        Left = 2
+        Height = 15
+        Top = 31
+        Width = 43
+        Caption = 'Reset'
+        Font.Height = -8
+        OnChange = ToggleBox1Change
+        ParentFont = False
+        TabOrder = 2
+      end
     end
   end
   object GroupBox5: TGroupBox
@@ -305,7 +317,7 @@ object Form1: TForm1
         OnChange = L_Ankle_yChange
       end
       object L_Ankle_z: TLabeledEdit
-        Left = 80
+        Left = 79
         Height = 23
         Top = 80
         Width = 80
@@ -327,7 +339,7 @@ object Form1: TForm1
       Caption = 'Right Foot'
       ClientHeight = 108
       ClientWidth = 180
-      Color = 16744576
+      Color = clBlue
       ParentBackground = False
       ParentColor = False
       TabOrder = 1
@@ -411,6 +423,17 @@ object Form1: TForm1
         OnClick = Button3Click
         ParentFont = False
         TabOrder = 1
+      end
+      object ToggleBox2: TToggleBox
+        Left = 2
+        Height = 15
+        Top = 29
+        Width = 43
+        Caption = 'Reset'
+        Font.Height = -8
+        OnChange = ToggleBox2Change
+        ParentFont = False
+        TabOrder = 2
       end
     end
   end
@@ -754,25 +777,25 @@ object Form1: TForm1
     object Panel1: TPanel
       Left = 8
       Height = 18
-      Top = 37
+      Top = 80
       Width = 26
-      Color = clRed
+      Color = clFuchsia
       ParentColor = False
       TabOrder = 0
     end
     object Panel2: TPanel
       Left = 8
       Height = 18
-      Top = 61
+      Top = 106
       Width = 26
-      Color = clBlack
+      Color = clBlue
       ParentColor = False
       TabOrder = 1
     end
     object Panel3: TPanel
       Left = 8
       Height = 18
-      Top = 85
+      Top = 32
       Width = 26
       Color = clLime
       ParentColor = False
@@ -781,9 +804,9 @@ object Form1: TForm1
     object Panel4: TPanel
       Left = 8
       Height = 18
-      Top = 109
+      Top = 56
       Width = 26
-      Color = clBlue
+      Color = clAqua
       ParentColor = False
       TabOrder = 3
     end
