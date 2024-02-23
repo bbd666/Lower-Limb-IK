@@ -233,16 +233,6 @@ object Form1: TForm1
       ClientHeight = 44
       ClientWidth = 196
       TabOrder = 3
-      object GAPatellaButton: TButton
-        Left = 25
-        Height = 25
-        Top = 0
-        Width = 143
-        Caption = 'Genetic Algorithm'
-        OnClick = GA_OptPatellaButtonClick
-        TabOrder = 0
-        Visible = False
-      end
       object LMPatellaButton: TButton
         Left = 2
         Height = 25
@@ -250,6 +240,17 @@ object Form1: TForm1
         Width = 192
         Caption = 'Broyden-Fletcher-Goldfarb-Shanno'
         OnClick = BFGS_OptPatellaButtonClick
+        TabOrder = 0
+      end
+      object Button2: TButton
+        Left = 143
+        Height = 15
+        Top = 32
+        Width = 56
+        Caption = 'Cost Function'
+        Font.Height = -8
+        OnClick = Button2Click
+        ParentFont = False
         TabOrder = 1
       end
     end
@@ -391,16 +392,6 @@ object Form1: TForm1
       ClientHeight = 44
       ClientWidth = 197
       TabOrder = 3
-      object GAAnkleButton: TButton
-        Left = 26
-        Height = 25
-        Top = 0
-        Width = 143
-        Caption = 'Genetic Algorithm'
-        OnClick = GA_OptAnkleButtonClick
-        TabOrder = 0
-        Visible = False
-      end
       object LMAnkleButton: TButton
         Left = 3
         Height = 25
@@ -408,6 +399,17 @@ object Form1: TForm1
         Width = 192
         Caption = 'Broyden-Fletcher-Goldfarb-Shanno'
         OnClick = BFGS_OptAnkleButtonClick
+        TabOrder = 0
+      end
+      object Button3: TButton
+        Left = 148
+        Height = 15
+        Top = 31
+        Width = 51
+        Caption = 'Cost Function'
+        Font.Height = -8
+        OnClick = Button3Click
+        ParentFont = False
         TabOrder = 1
       end
     end
@@ -571,6 +573,7 @@ object Form1: TForm1
   object BitBtn1: TBitBtn
     Left = 752
     Height = 29
+    Hint = 'Left Click : English'#13#10'Right Click : French'
     Top = 608
     Width = 29
     Glyph.Data = {
@@ -619,7 +622,9 @@ object Form1: TForm1
     }
     GlyphShowMode = gsmAlways
     Margin = 1
-    OnClick = BitBtn1Click
+    OnMouseDown = BitBtn1MouseDown
+    ParentShowHint = False
+    ShowHint = True
     TabOrder = 10
   end
   object Label1: TLabel
@@ -714,16 +719,6 @@ object Form1: TForm1
       ClientHeight = 44
       ClientWidth = 197
       TabOrder = 3
-      object GAKneeButton: TButton
-        Left = 32
-        Height = 25
-        Top = 0
-        Width = 143
-        Caption = 'Genetic Algorithm'
-        OnClick = GAKneeButtonClick
-        TabOrder = 0
-        Visible = False
-      end
       object LMKneeButton: TButton
         Left = 16
         Height = 25
@@ -731,22 +726,8 @@ object Form1: TForm1
         Width = 171
         Caption = 'Find Max Feasible Shift'
         OnClick = LMKneeButtonClick
-        TabOrder = 1
+        TabOrder = 0
       end
-    end
-    object Frame_Index_Edit: TLabeledEdit
-      Left = 120
-      Height = 23
-      Top = 160
-      Width = 48
-      EditLabel.Height = 15
-      EditLabel.Width = 84
-      EditLabel.Caption = 'Frame Index Ref'
-      EditLabel.ParentColor = False
-      LabelPosition = lpLeft
-      TabOrder = 4
-      Text = '0'
-      OnChange = Frame_Index_EditChange
     end
   end
   object frame_nb_edit: TEdit

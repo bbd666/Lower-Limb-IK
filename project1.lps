@@ -61,9 +61,9 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Unit1"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="1575"/>
-        <CursorPos X="65" Y="1584"/>
-        <FoldState Value=" T3n90S1 piZjO0q8 plIn20L6]IejW0^E]9clJ0{X5 pjDmA0X4]92k20^41713 pmAtC034 PjTK0 TMnA02 T6nD02L pWzI01D2 pew7012 PBkC]c1nG0L217 pnKpK0K]9kBlT0732815 pjSoa0S5]M9lb02321132214 PkDs6]:0nK23311]YLmQ54]9igmY4415B]+0u64964141[Z4ZtY472 PEiH4$"/>
+        <TopLine Value="1771"/>
+        <CursorPos X="3" Y="1786"/>
+        <FoldState Value=" T8lf2E TMn102 p0/82]91 TL#D242 PSR2 T3n00S02716 pjYrD0S1 pibjQ0901A11112212]Kkesf[K44]VXjO070[S4]rEnK0c4 PCiH0 T6n4020261C pMyZ0101];]h4]@KuT0]qPBka]h1n70L028 pkap50K7]9BlT0701B]BFm00A222]w5[{P5lQw50X5 PbjM]+0nB235]fPmB541 pigmY444 pjRlD7L3]IZkI1BB]9YkN6391219 PmJvb4T"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -73,39 +73,39 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="105"/>
         <CursorPos X="14" Y="125"/>
-        <UsageCount Value="74"/>
+        <UsageCount Value="70"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\AppData\Local\lazarus\onlinepackagemanager\packages\GLSceneLCL\Source\Basis\GLVectorGeometry.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="1634"/>
         <CursorPos X="10" Y="1666"/>
-        <UsageCount Value="95"/>
+        <UsageCount Value="91"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\AppData\Local\lazarus\onlinepackagemanager\packages\GLSceneLCL\Source\GLScene.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="863"/>
         <CursorPos X="15" Y="883"/>
-        <UsageCount Value="26"/>
+        <UsageCount Value="22"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\AppData\Local\lazarus\onlinepackagemanager\packages\DMath\dmath.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="62" Y="11"/>
-        <UsageCount Value="100"/>
+        <UsageCount Value="96"/>
       </Unit>
       <Unit>
         <Filename Value="numgrad.inc"/>
-        <EditorIndex Value="3"/>
-        <CursorPos X="13" Y="33"/>
+        <EditorIndex Value="4"/>
+        <CursorPos X="34" Y="4"/>
         <UsageCount Value="100"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\rtl\win\sysutils.pp"/>
         <UnitName Value="SysUtils"/>
-        <EditorIndex Value="4"/>
+        <EditorIndex Value="5"/>
         <UsageCount Value="116"/>
         <Loaded Value="True"/>
       </Unit>
@@ -115,21 +115,21 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="338"/>
         <CursorPos X="10" Y="358"/>
-        <UsageCount Value="74"/>
+        <UsageCount Value="70"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\AppData\Local\lazarus\onlinepackagemanager\packages\GLSceneLCL\Source\Basis\GLApplicationFileIO.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="138"/>
         <CursorPos Y="191"/>
-        <UsageCount Value="23"/>
+        <UsageCount Value="19"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\..\..\AppData\Local\lazarus\onlinepackagemanager\packages\GLSceneLCL\Source\Basis\GLVectorGeometry.pas"/>
-        <EditorIndex Value="2"/>
-        <TopLine Value="6483"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="193"/>
         <CursorPos X="58" Y="6500"/>
-        <UsageCount Value="35"/>
+        <UsageCount Value="53"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
@@ -138,138 +138,146 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="19"/>
         <CursorPos X="36" Y="36"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="5"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\packages\rtl-objpas\src\inc\dateutils.pp"/>
         <UnitName Value="DateUtils"/>
-        <EditorIndex Value="1"/>
+        <EditorIndex Value="2"/>
         <CursorPos X="58"/>
-        <UsageCount Value="12"/>
+        <UsageCount Value="30"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="C:\lazarus\lcl\controls.pp"/>
+        <UnitName Value="Controls"/>
+        <EditorIndex Value="1"/>
+        <CursorPos X="81" Y="9"/>
+        <UsageCount Value="13"/>
         <Loaded Value="True"/>
       </Unit>
     </Units>
     <JumpHistory HistoryIndex="29">
       <Position>
         <Filename Value="unit1.pas"/>
-        <Caret Line="225" Column="37" TopLine="203"/>
+        <Caret Line="1468" TopLine="1440"/>
       </Position>
       <Position>
         <Filename Value="unit1.pas"/>
-        <Caret Line="225" Column="37" TopLine="203"/>
+        <Caret Line="175" Column="30" TopLine="154"/>
       </Position>
       <Position>
         <Filename Value="unit1.pas"/>
-        <Caret Line="435" Column="28" TopLine="239"/>
+        <Caret Line="1790" Column="5" TopLine="1769"/>
       </Position>
       <Position>
         <Filename Value="unit1.pas"/>
-        <Caret Line="881" TopLine="486"/>
+        <Caret Line="1791" TopLine="1769"/>
       </Position>
       <Position>
         <Filename Value="unit1.pas"/>
-        <Caret Line="869" Column="5" TopLine="867"/>
+        <Caret Line="1529" Column="30" TopLine="1503"/>
       </Position>
       <Position>
         <Filename Value="unit1.pas"/>
-        <Caret Line="1769" Column="4" TopLine="1628"/>
+        <Caret Line="175" Column="30" TopLine="154"/>
       </Position>
       <Position>
         <Filename Value="unit1.pas"/>
-        <Caret Line="1764" Column="35" TopLine="1559"/>
+        <Caret Line="1796" Column="16" TopLine="1774"/>
       </Position>
       <Position>
         <Filename Value="unit1.pas"/>
-        <Caret Line="1490" Column="7" TopLine="1380"/>
+        <Caret Line="1138" TopLine="1108"/>
       </Position>
       <Position>
         <Filename Value="unit1.pas"/>
-        <Caret Line="1477" Column="40" TopLine="1454"/>
+        <Caret Line="1135" Column="3" TopLine="1108"/>
       </Position>
       <Position>
         <Filename Value="unit1.pas"/>
-        <Caret Line="241" Column="12" TopLine="235"/>
+        <Caret Line="1155" Column="44" TopLine="1133"/>
       </Position>
       <Position>
         <Filename Value="unit1.pas"/>
-        <Caret Line="1490" Column="27" TopLine="1454"/>
+        <Caret Line="920" TopLine="898"/>
       </Position>
       <Position>
         <Filename Value="unit1.pas"/>
-        <Caret Line="1485" Column="8" TopLine="1454"/>
+        <Caret Line="1047" Column="3" TopLine="921"/>
       </Position>
       <Position>
         <Filename Value="unit1.pas"/>
-        <Caret Line="1497" Column="20" TopLine="1475"/>
+        <Caret Line="175" Column="27" TopLine="154"/>
       </Position>
       <Position>
         <Filename Value="unit1.pas"/>
-        <Caret Line="1490" Column="51" TopLine="1465"/>
+        <Caret Line="1129" Column="15" TopLine="1108"/>
       </Position>
       <Position>
         <Filename Value="unit1.pas"/>
-        <Caret Line="1486" Column="6" TopLine="1472"/>
+        <Caret Line="197" Column="57" TopLine="177"/>
       </Position>
       <Position>
         <Filename Value="unit1.pas"/>
-        <Caret Line="1479" Column="50" TopLine="1467"/>
+        <Caret Line="195" Column="38" TopLine="174"/>
       </Position>
       <Position>
         <Filename Value="unit1.pas"/>
-        <Caret Line="1526" Column="36" TopLine="1520"/>
+        <Caret Line="826" TopLine="408"/>
       </Position>
       <Position>
         <Filename Value="unit1.pas"/>
-        <Caret Line="437" Column="37" TopLine="431"/>
+        <Caret Line="472" TopLine="444"/>
       </Position>
       <Position>
         <Filename Value="unit1.pas"/>
-        <Caret Line="1482" TopLine="1456"/>
+        <Caret Line="292" TopLine="259"/>
       </Position>
       <Position>
         <Filename Value="unit1.pas"/>
-        <Caret Line="1477" Column="46" TopLine="1389"/>
+        <Caret Line="365" TopLine="342"/>
       </Position>
       <Position>
         <Filename Value="unit1.pas"/>
-        <Caret Line="1499" Column="49" TopLine="1422"/>
+        <Caret Line="471" TopLine="443"/>
       </Position>
       <Position>
         <Filename Value="unit1.pas"/>
-        <Caret Line="15" Column="12"/>
+        <Caret Line="195" Column="56" TopLine="174"/>
       </Position>
       <Position>
         <Filename Value="unit1.pas"/>
-        <Caret Line="1474" Column="4" TopLine="1206"/>
+        <Caret Line="1047" TopLine="919"/>
       </Position>
       <Position>
         <Filename Value="unit1.pas"/>
-        <Caret Line="13" Column="10"/>
+        <Caret Line="197" Column="119" TopLine="176"/>
       </Position>
       <Position>
         <Filename Value="unit1.pas"/>
-        <Caret Line="1490" Column="31" TopLine="1480"/>
+        <Caret Line="175" Column="27" TopLine="154"/>
       </Position>
       <Position>
         <Filename Value="unit1.pas"/>
-        <Caret Line="15" Column="12"/>
+        <Caret Line="1793" Column="16" TopLine="1771"/>
       </Position>
       <Position>
         <Filename Value="unit1.pas"/>
-        <Caret Line="1508" Column="35" TopLine="1486"/>
+        <Caret Line="1127" Column="31" TopLine="1105"/>
       </Position>
       <Position>
         <Filename Value="unit1.pas"/>
-        <Caret Line="1510" Column="14" TopLine="1485"/>
+        <Caret Line="1819" Column="55" TopLine="1777"/>
       </Position>
       <Position>
         <Filename Value="unit1.pas"/>
-        <Caret Line="1501" Column="18" TopLine="1488"/>
+        <Caret Line="11" Column="55"/>
       </Position>
       <Position>
         <Filename Value="unit1.pas"/>
-        <Caret Line="1593" Column="37" TopLine="241"/>
+        <Caret Line="1786" Column="5" TopLine="1776"/>
       </Position>
     </JumpHistory>
     <RunParams>
@@ -277,11 +285,9 @@
       <Modes ActiveMode=""/>
     </RunParams>
     <HistoryLists>
-      <List Name="WorkingDirectory" Type="File" Count="1"/>
       <List Name="LaunchingApplication" Type="File" Count="1">
         <Item1 Value="C:\Windows\system32\cmd.exe /C ${TargetCmdLine}"/>
       </List>
-      <List Name="CommandLineParameters" Count="1"/>
     </HistoryLists>
   </ProjectSession>
 </CONFIG>

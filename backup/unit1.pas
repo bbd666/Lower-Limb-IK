@@ -26,6 +26,8 @@ type
   TForm1 = class(TForm)
     BitBtn1: TBitBtn;
     Button1: TButton;
+    Button2: TButton;
+    Button3: TButton;
     Edit_Folder_Processing: TButton;
     CBLTH: TCheckBox;
     CBRTH: TCheckBox;
@@ -60,8 +62,6 @@ type
     CheckBox8: TCheckBox;
     CheckBox9: TCheckBox;
     frame_nb_edit: TEdit;
-    GAKneeButton: TButton;
-    Frame_Index_Edit: TLabeledEdit;
     lbl_LTHI: TGLAbsoluteHUDText;
     lbl_RTHI: TGLAbsoluteHUDText;
     GLLTHI: TGLSphere;
@@ -86,8 +86,6 @@ type
     CheckBox2: TCheckBox;
     CheckBox3: TCheckBox;
     CheckGroup1: TCheckGroup;
-    GAAnkleButton: TButton;
-    GAPatellaButton: TButton;
     Label1: TLabel;
     lbl_RANK: TGLAbsoluteHUDText;
     lbl_RHEE: TGLAbsoluteHUDText;
@@ -104,7 +102,6 @@ type
     SAVEAnkle: TButton;
     ChartButton: TButton;
     SAVECapella: TButton;
-    GA_OptAnkleButton: TButton;
     lbl_LANK: TGLAbsoluteHUDText;
     lbl_LTOE: TGLAbsoluteHUDText;
     lbl_LHEE: TGLAbsoluteHUDText;
@@ -132,7 +129,6 @@ type
     Chart1: TChart;
     GroupBox3: TGroupBox;
     LineSeries1: TLineSeries;
-    GA_OptPatellaButton: TButton;
     GroupBox1: TGroupBox;
     GroupBox2: TGroupBox;
     BFGS_OptAnkleButton: TButton;
@@ -175,14 +171,15 @@ type
     OpenDialog1: TOpenDialog;
     R_Ankle_z: TLabeledEdit;
     TrackBar1: TTrackBar;
-    procedure BitBtn1Click(Sender: TObject);
+    procedure BitBtn1MouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
     procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
     procedure Edit_Folder_ProcessingClick(Sender: TObject);
     procedure DisplayOptionChange(Sender: TObject);
     procedure FolderEditDblClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
-    procedure Frame_Index_EditChange(Sender: TObject);
-    procedure GAKneeButtonClick(Sender: TObject);
     procedure Edit_Run_Joint_AnglesClick(Sender: TObject);
     procedure ChartButtonClick(Sender: TObject);
     procedure CheckBoxChange(Sender: TObject);
@@ -192,9 +189,6 @@ type
     procedure SAVEAnkle1Click(Sender: TObject);
     procedure SAVEAnkleClick(Sender: TObject);
     procedure SAVECapellaClick(Sender: TObject);
-    procedure GA_OptAnkleButtonClick(Sender: TObject);
-    procedure GA_OptPatellaButtonClick(Sender: TObject);
-    procedure GA_Opt(Option:Integer);
     procedure BFGS_Opt(Option:Integer);
     procedure FormCreate(Sender: TObject);
     procedure GLCadencer1Progress(Sender: TObject; const deltaTime,newTime: Double);
@@ -229,7 +223,6 @@ type
     procedure update_RFoot_Frame;
     procedure update_LKnee_Frame;
     procedure update_RKnee_Frame;
-    Function Cost(Sender: TObject; const Population :TDiffEvolPopulation):Double;
     procedure load_ini;
     procedure save_ini(Option:Integer);
     procedure Make3DFiles(fname, filename: string);
@@ -240,19 +233,16 @@ var
   Form1: TForm1;
   mx,my : integer;
   nom_mocap,nom_ik,Folder_Name:string;
-  nb_blocs, NB_GENERATION,nb_pop:integer;
+  nb_blocs :integer;
   RASI,LASI,root,LPSI,RKNEE,LKNEE,LANK,LTOE,LHEE,LMT5,RANK,RTOE,RHEE,RMT5,LTHI,RTHI:array of GLVectorgeometry.Tvector;
   Lrot_TAB,Rrot_TAB,LAnkl_TAB,Rankl_TAB:Array of GLVectorgeometry.tvector;
-  gain_best,gain_r1,gain_r2,gain_r3,cr : double;
   OPT_OPT:Integer;      //Option d'optimisation
   NVAR:Integer;
-  Frame_Index:integer=0;
   centers_updated:boolean=TRUE;
   Folder_out_Name:string;
 
   Function Func(Population :TVector):double;
   Function calc_localFrame_Knee(i:integer;side:TSIDE):GLVectorgeometry.TMatrix;
-  Function Build_Rotated_Knee(angle:double;side:TSIDE):GLVectorgeometry.Tvector;
   Function Build_Shifted_Knee(i:integer;shift:double;side:TSIDE):GLVectorgeometry.Tvector;
   Function calc_Hip_Matrix(i:integer):GLVectorgeometry.TMatrix;
 
@@ -304,12 +294,6 @@ var
 
 begin
    config := Tinifile.Create('config.ini');
-   NB_GENERATION:=config.ReadInteger('SETTINGS','NB_GENERATION',100);
-   gain_best:=config.ReadFloat('SETTINGS','GAIN_BEST',1);
-   gain_r1:=config.ReadFloat('SETTINGS','GAIN_R1',0.5);
-   gain_r2:=config.ReadFloat('SETTINGS','GAIN_R2',0.3);
-   gain_r3:=config.ReadFloat('SETTINGS','GAIN_R3',0.3);
-   nb_pop:=config.ReadInteger('SETTINGS','NB_POPULATION',50);
 
    L_rot_x.text:=config.ReadString('LEFT ROTULE COORDS','X','0');
    L_rot_y.text:=config.ReadString('LEFT ROTULE COORDS','Y','0');
@@ -327,9 +311,6 @@ begin
 
    L_Knee_Shift.text:=config.ReadString('KNEE TRANSVERSE SHIFT','LEFT','0');
    R_Knee_Shift.text:=config.ReadString('KNEE TRANSVERSE SHIFT','RIGHT','0');
-
-   Frame_Index_Edit.text:=inttostr(config.ReadInteger('FRAME INDEX REFERENCE','I',0));
-
 
    Mrkr_rad:=config.ReadFloat('DISPLAY','MARKER RADIUS',0.01);
    Knee_Mrkr_rad:=config.ReadFloat('DISPLAY','KNEE MARKER RADIUS',0.02);
@@ -384,12 +365,6 @@ var
      i:integer;
 begin
    config := Tinifile.Create('config.ini');
-   config.WriteInteger('SETTINGS','NB_GENERATION',NB_GENERATION);
-   config.WriteFloat('SETTINGS','GAIN_BEST',gain_best);
-   config.WriteFloat('SETTINGS','GAIN_R1',gain_r1);
-   config.WriteFloat('SETTINGS','GAIN_R2',gain_r2);
-   config.WriteFloat('SETTINGS','GAIN_R3',gain_r3);
-   config.WriteInteger('SETTINGS','NB_POPULATION',nb_pop);
 
    case Option of
    1:
@@ -889,16 +864,6 @@ begin
     end;
 end;
 
-procedure TForm1.GA_OptAnkleButtonClick(Sender: TObject);
-begin
-    if nb_blocs>0 then GA_Opt(2);
-end;
-
-procedure TForm1.GA_OptPatellaButtonClick(Sender: TObject);
-begin
-  if nb_blocs>0 then GA_Opt(1);
-end;
-
 procedure TForm1.L_Ankle_xChange(Sender: TObject);
 var
   out:double;
@@ -952,7 +917,6 @@ var
  i,j,nb_separateurs:integer;
  charArray : Array[0..0] of Char;
  stra:  Array of String;
- tab:array of integer;
  ligne:Tstringlist;
 begin
    charArray[0]:=',';
@@ -1078,26 +1042,41 @@ begin
     result.W.w:=1;
 end;
 
-Function calc_dist2Patellas(i:integer;v1,v2:GLVectorgeometry.tvector):Double;
+Function calc_dist2Patellas(i:integer;v1,v2:GLVectorgeometry.tvector;s:TSIDE):Double;
 var
-  xaxis,yaxis,zaxis,center,Lrot,Rrot:GLVectorgeometry.Tvector;
+  Lrot,Rrot:GLVectorgeometry.Tvector;
   M:GLVectorgeometry.Tmatrix;
 begin
-    M:=calc_Hip_Matrix(i);
+   M:=calc_Hip_Matrix(i);
+   case s of
+   TSide.LEFT :
+   begin
     Lrot:=v1;Lrot.W:=1;
     Lrot:=VectorTransform(Lrot,M);
+    if vectorisnull(RASI[i]) or vectorisnull(LASI[i]) or vectorisnull(Root[i]) or vectorisnull(LPSI[i]) or vectorisnull(LKNEE[i]) then result:=-1
+    else
+    result:=VectorLength(vectorsubtract(LKNEE[i],Lrot));
+    end;
+   TSide.RIGHT :
+   begin
     Rrot:=v2;Rrot.W:=1;
     Rrot:=VectorTransform(Rrot,M);
-    if vectorisnull(RASI[i]) or vectorisnull(LASI[i]) or vectorisnull(Root[i]) or vectorisnull(LPSI[i]) or vectorisnull(LKNEE[i]) or vectorisnull(RKNEE[i]) then result:=-1
+    if vectorisnull(RASI[i]) or vectorisnull(LASI[i]) or vectorisnull(Root[i]) or vectorisnull(LPSI[i]) or vectorisnull(RKNEE[i]) then result:=-1
     else
-    result:=VectorLength(vectorsubtract(LKNEE[i],Lrot))+VectorLength(vectorsubtract(RKNEE[i],Rrot));
+    result:=VectorLength(vectorsubtract(RKNEE[i],Rrot));
+   end;
+   end;
 end;
 
-Function calc_dist2ankles(i:integer;v1,v2:GLVectorgeometry.tvector):Double;
+Function calc_dist2ankles(i:integer;v1,v2:GLVectorgeometry.tvector;s:TSIDE):Double;
 var
   xaxis,yaxis,zaxis,LCenter,RCenter,LAnkl,RAnkl:GLVectorgeometry.Tvector;
   M:GLVectorgeometry.Tmatrix;
 begin
+ M:=calc_Hip_Matrix(i);
+ case s of
+ TSide.LEFT :
+ begin
     Lcenter:=vectorscale(vectoradd(vectoradd(LTOE[i],LMT5[i]),LHEE[i]),1/3);
     xaxis:=Vectornormalize(VectorSubtract(vectorscale(vectoradd(LMT5[i],LTOE[i]),0.5),LHEE[i]));
     zaxis:=Vectornormalize(VectorCrossProduct(VectorSubtract(LTOE[i],LMT5[i]),xaxis));
@@ -1105,6 +1084,12 @@ begin
     M.X:=xaxis;M.Y:=yaxis;M.Z:=zaxis;M.W:=Lcenter;
     LAnkl:=v1;LAnkl.W:=1;
     LAnkl:=VectorTransform(LAnkl,M);
+    if vectorisnull(LKNEE[i]) or vectorisnull(LHEE[i]) or vectorisnull(LTOE[i]) or vectorisnull(LMT5[i]) then result:=-1
+    else
+    result:=VectorLength(vectorsubtract(LKNEE[i],LAnkl));
+ end;
+ TSide.RIGHT :
+ begin
     Rcenter:=vectorscale(vectoradd(vectoradd(RTOE[i],RMT5[i]),RHEE[i]),1/3);
     xaxis:=Vectornormalize(VectorSubtract(vectorscale(vectoradd(RMT5[i],RTOE[i]),0.5),RHEE[i]));
     zaxis:=Vectornormalize(VectorCrossProduct(xaxis,VectorSubtract(RTOE[i],RMT5[i])));
@@ -1112,9 +1097,11 @@ begin
     M.X:=xaxis;M.Y:=yaxis;M.Z:=zaxis;M.W:=Rcenter;
     RAnkl:=v2;RAnkl.W:=1;
     RAnkl:=VectorTransform(RAnkl,M);
-    if vectorisnull(LKNEE[i]) or vectorisnull(LHEE[i]) or vectorisnull(LTOE[i]) or vectorisnull(LMT5[i]) or vectorisnull(RKNEE[i]) or vectorisnull(RHEE[i]) or vectorisnull(RTOE[i]) or vectorisnull(RMT5[i]) then result:=-1
+    if vectorisnull(RKNEE[i]) or vectorisnull(RHEE[i]) or vectorisnull(RTOE[i]) or vectorisnull(RMT5[i]) then result:=-1
     else
-    result:=VectorLength(vectorsubtract(LKNEE[i],LAnkl))+VectorLength(vectorsubtract(RKNEE[i],RAnkl));
+    result:=VectorLength(vectorsubtract(RKNEE[i],RAnkl));
+ end;
+ end;
 end;
 
 Function calc_localFrame_Knee(i:integer;side:TSIDE):GLVectorgeometry.TMatrix;   //Calcule le repère local centré sur KNEE et orienté par THI exprimé dans GLDummycube1
@@ -1142,41 +1129,11 @@ begin
     result.X:=xaxis;result.Y:=yaxis;result.Z:=zaxis;result.W:=center;
 end;
 
-Function Build_Rotated_Knee(angle:double;side:TSIDE):GLVectorgeometry.Tvector;     //calcule la position du marker KNEE après rotation dans le repère GLDummycube1
-var
-  Center,Axis,Rot_Ankle_direction,Center_Knee_direction:GLVectorgeometry.Tvector;
-begin
-  case side of
-  TSIDE(LEFT) :
-    begin
-      //Rot_Ankle_direction : vecteur unitaire partant de LROT_TAB et pointant vers LANKL_TAB
-      Rot_Ankle_direction:=VectorNormalize(vectorsubtract(LANKL_TAB[Frame_index],LROT_TAB[Frame_index]));
-      //Center : centre du cercle de diamètre [LKNEE;projection de LKNEE sur le segment (LROT_TAB;LANKL_TAB)]
-      Center:=vectorscale(vectoradd(LKNEE[Frame_index],vectoradd(LROT_TAB[Frame_index],vectorscale(Rot_Ankle_direction,PointProject(LKNEE[Frame_index],LROT_TAB[Frame_index],Rot_Ankle_direction)))),0.5);
-      //Center_Knee_direction : vecteur partant de Center et pointant vers LKNEE
-      Center_Knee_direction:=vectorsubtract(LKNEE[Frame_index],Center);
-      //AXIS : axe de symétrie du cercle de centre Center et passant par LKNEE
-      Axis:=Rot_Ankle_direction;
-      RotateVector(Center_Knee_direction,Axis,angle);
-      result:=vectoradd(Center,Center_Knee_direction);
-    end;
-  TSIDE(RIGHT) :
-    begin
-      Rot_Ankle_direction:=VectorNormalize(vectorsubtract(RANKL_TAB[Frame_index],RROT_TAB[Frame_index]));
-      Center:=vectorscale(vectoradd(RKNEE[Frame_index],vectoradd(RROT_TAB[Frame_index],vectorscale(Rot_Ankle_direction,PointProject(RKNEE[Frame_index],RROT_TAB[Frame_index],Rot_Ankle_direction)))),0.5);
-      Center_Knee_direction:=vectorsubtract(RKNEE[Frame_index],Center);
-      Axis:=Rot_Ankle_direction;
-      RotateVector(Center_Knee_direction,Axis,angle);
-      result:=vectoradd(Center,Center_Knee_direction);
-    end;
-  end;
-end;
-
 Function Build_Shifted_Knee(i:integer;shift:double;side:TSIDE):GLVectorgeometry.Tvector; //calcule la position du marker KNEE après rotation dans le repère GLDummycube1 conduisant à un ecart (shift) donné
 var
-  LrealKNEE,RrealKNEE,Axis,Center,Rot_Ankle_direction,Center_Knee_direction:GLVectorgeometry.Tvector;
+  Axis,Center,Rot_Ankle_direction,Center_Knee_direction:GLVectorgeometry.Tvector;
   Rayon,angle:double;
-  M:GLVectorgeometry.Tmatrix;
+
 begin
 
  case side of
@@ -1233,34 +1190,64 @@ end;
 
 Function Func(Population :TVector):double;
 var
-  vec1,vec2,LReal_Knee_LocalCoords,RReal_Knee_LocalCoords:GLVectorgeometry.Tvector;
-  SHIFTS:array[0..1] of double;
-  M:GLVectorgeometry.Tmatrix;
+  vec1,vec2:GLVectorgeometry.Tvector;
   i,nb_echantillons_valides:integer;
-  moyenne,ecart_type,d:double;
-  s:TSIDE;
+  moyenne_L,ecart_type_L,moyenne_R,ecart_type_R,d_L,d_R:double;
 begin
 
-    moyenne:=0;
+    moyenne_L:=0;
+    moyenne_R:=0;
     Vec1:=vectormake(Population[1],Population[2],Population[3]);
     Vec2:=vectormake(Population[4],Population[5],Population[6]);
     nb_echantillons_valides:=Length(root);
-    for i:=0 to High(root) do
-    begin
-      if OPT_OPT=1 then d:=calc_dist2Patellas(i,Vec1,Vec2) else d:=calc_dist2Ankles(i,Vec1,Vec2);
-      if d<>-1 then moyenne:=moyenne+d else dec(nb_echantillons_valides);
-    end;
-    moyenne:=moyenne/nb_echantillons_valides;
 
-    ecart_type:=0;
     for i:=0 to High(root) do
     begin
-      if OPT_OPT=1 then d:=calc_dist2Patellas(i,Vec1,Vec2) else d:=calc_dist2Ankles(i,Vec1,Vec2);
-      if d<>-1 then ecart_type:=ecart_type+sqr(d-moyenne);
+      if OPT_OPT=1 then
+      begin
+        d_L:=calc_dist2Patellas(i,Vec1,Vec2,TSIDE.LEFT);
+        d_R:=calc_dist2Patellas(i,Vec1,Vec2,TSIDE.RIGHT);
+      end
+      else
+      begin
+        d_L:=calc_dist2Ankles(i,Vec1,Vec2,TSIDE.LEFT);
+        d_R:=calc_dist2Ankles(i,Vec1,Vec2,TSIDE.RIGHT);
+      end;
+      if (d_R<>-1) AND (d_L<>-1) then
+      begin
+        moyenne_L:=moyenne_L+d_L;
+        moyenne_R:=moyenne_R+d_R;
+      end
+        else dec(nb_echantillons_valides);
     end;
-    ecart_type:=ecart_type/nb_echantillons_valides;
-    ecart_type:=sqrt(ecart_type);
-    result:=1000*ecart_type;
+    moyenne_L:=moyenne_L/nb_echantillons_valides;
+    moyenne_R:=moyenne_R/nb_echantillons_valides;
+
+    ecart_type_L:=0;
+    ecart_type_R:=0;
+    for i:=0 to High(root) do
+    begin
+      if OPT_OPT=1 then
+      begin
+        d_L:=calc_dist2Patellas(i,Vec1,Vec2,TSIDE.LEFT);
+        d_R:=calc_dist2Patellas(i,Vec1,Vec2,TSIDE.RIGHT);
+      end
+      else
+      begin
+        d_L:=calc_dist2Ankles(i,Vec1,Vec2,TSIDE.LEFT);
+        d_R:=calc_dist2Ankles(i,Vec1,Vec2,TSIDE.RIGHT);
+      end;
+      if (d_R<>-1) AND (d_L<>-1) then
+      begin
+        ecart_type_L:=ecart_type_L+sqr(d_L-moyenne_L);
+        ecart_type_R:=ecart_type_R+sqr(d_R-moyenne_R);
+      end;
+    end;
+    ecart_type_L:=ecart_type_L/nb_echantillons_valides;
+    ecart_type_L:=sqrt(ecart_type_L);
+    ecart_type_R:=ecart_type_R/nb_echantillons_valides;
+    ecart_type_R:=sqrt(ecart_type_R);
+    result:=1000*(ecart_type_L+ecart_type_R);
 end;
 
 Procedure TForm1.Fill_Joints_Center_Tabs;  //calcule les positions exactes (dans le repère GLDummycube1) des articulations de HIP et ANKLE pour chaque FRAME
@@ -1303,133 +1290,15 @@ begin
    end;
 end;
 
-procedure TForm1.GA_Opt(Option:Integer);
-  var
-    min_Bounds,max_Bounds,ini_pop,best_pop : TDiffEvolPopulation;
-    i,j,k : integer;
-    de:TdiffEvol;
-    v1,v2,v3,v4:GLVectorgeometry.tvector;
-
-begin
-
-    OPT_OPT:=Option;
-    NVAR:=6;
-
-    setlength(ini_pop,NVAR);
-    setlength(min_Bounds,NVAR);
-    setlength(max_Bounds,NVAR);
-    setlength(best_pop,NVAR);
-
-
-    case OPT_OPT of
-    1:
-    begin
-      ini_pop[0]:=strtofloat(L_rot_x.Text);
-      ini_pop[1]:=strtofloat(L_rot_y.Text);
-      ini_pop[2]:=strtofloat(L_rot_z.Text);
-      ini_pop[3]:=strtofloat(R_rot_x.Text);
-      ini_pop[4]:=strtofloat(R_rot_y.Text);
-      ini_pop[5]:=strtofloat(R_rot_z.Text);
-      for i:=0 to NVAR-1 do min_Bounds[i]:=-0.2;
-      for i:=0 to NVAR-1 do max_Bounds[i]:=0.2;
-    end;
-    2:
-    begin
-      ini_pop[0]:=strtofloat(L_Ankle_x.Text);
-      ini_pop[1]:=strtofloat(L_Ankle_y.Text);
-      ini_pop[2]:=strtofloat(L_Ankle_z.Text);
-      ini_pop[3]:=strtofloat(R_Ankle_x.Text);
-      ini_pop[4]:=strtofloat(R_Ankle_y.Text);
-      ini_pop[5]:=strtofloat(R_Ankle_z.Text);
-      for i:=0 to NVAR-1 do min_Bounds[i]:=-0.2;
-      for i:=0 to NVAR-1 do max_Bounds[i]:=0.2;
-    end;
-
-    end;
-
-
-
-    de:=TDiffEvol.Create(nb_pop,NVAR,min_Bounds,max_Bounds,ini_pop);
-    de.OnCalcCosts:=Cost;
-    Screen.Cursor := crHourglass;
-    for i:=0 to NB_GENERATION do
-    begin
-      de.evolve(gain_best,gain_r1,gain_r2,gain_r3,cr);
-      caption:=inttostr(i);
-    end;
-    Screen.Cursor := crDefault;
-
-    best_pop:=de.getbestPopulation;
-    caption:=floattostrf(cost(self,best_pop),fffixed,6,4);
-
-    case Option of
-    1:
-    begin
-      L_rot_x.Text:=floattostrf(best_pop[0],fffixed,6,4);
-      L_rot_y.Text:=floattostrf(best_pop[1],fffixed,6,4);
-      L_rot_z.Text:=floattostrf(best_pop[2],fffixed,6,4);
-      R_rot_x.Text:=floattostrf(best_pop[3],fffixed,6,4);
-      R_rot_y.Text:=floattostrf(best_pop[4],fffixed,6,4);
-      R_rot_z.Text:=floattostrf(best_pop[5],fffixed,6,4);
-    end;
-    2:
-    begin
-      L_Ankle_x.Text:=floattostrf(best_pop[0],fffixed,6,4);
-      L_Ankle_y.Text:=floattostrf(best_pop[1],fffixed,6,4);
-      L_Ankle_z.Text:=floattostrf(best_pop[2],fffixed,6,4);
-      R_Ankle_x.Text:=floattostrf(best_pop[3],fffixed,6,4);
-      R_Ankle_y.Text:=floattostrf(best_pop[4],fffixed,6,4);
-      R_Ankle_z.Text:=floattostrf(best_pop[5],fffixed,6,4);
-    end;
-
-    end;
-end;
-
 procedure TForm1.SAVECapellaClick(Sender: TObject);
 begin
     save_ini(1);
 end;
 
-Function TForm1.Cost(Sender: TObject; const Population :TDiffEvolPopulation):Double;
-var
-  LReal_Knee_LocalCoords,RReal_Knee_LocalCoords:GLVectorgeometry.Tvector;
-  vec1,vec2:GLVectorgeometry.Tvector;
-  SHIFTS:array[0..1] of double;
-  i,nb_echantillons_valides:integer;
-  moyenne,ecart_type,d:double;
-  M:GLVectorgeometry.Tmatrix;
-begin
-
-    Vec1:=vectormake(Population[0],Population[1],Population[2]);
-    Vec2:=vectormake(Population[3],Population[4],Population[5]);
-    moyenne:=0;
-    nb_echantillons_valides:=Length(root);
-    for i:=0 to High(root) do
-    begin
-      if OPT_OPT=1 then d:=calc_dist2Patellas(i,Vec1,Vec2) else d:=calc_dist2Ankles(i,Vec1,Vec2);
-      if d<>-1 then moyenne:=moyenne+d else dec(nb_echantillons_valides);
-    end;
-    moyenne:=moyenne/nb_echantillons_valides;
-
-    ecart_type:=0;
-    for i:=0 to High(root) do
-    begin
-      if OPT_OPT=1 then d:=calc_dist2Patellas(i,Vec1,Vec2) else d:=calc_dist2Ankles(i,Vec1,Vec2);
-      if d<>-1 then ecart_type:=ecart_type+sqr(d-moyenne);
-    end;
-    ecart_type:=ecart_type/nb_echantillons_valides;
-    ecart_type:=sqrt(ecart_type);
-    result:=1000*ecart_type;
-
-end;
-
 procedure TForm1.ChartButtonClick(Sender: TObject);
 var
-  ini_pop : TDiffEvolPopulation;
   LKN,RKN:array of GLVectorgeometry.tvector;
-  M:GLVectorgeometry.Tmatrix;
   i:integer;
-  s:TSIDE;
 begin
    Fill_Joints_Center_Tabs;
 
@@ -1467,6 +1336,36 @@ begin
    config.WriteFloat('DISPLAY','CAMERA TARGET POSITION Y',GLdummycube1.Position.y);
    config.WriteFloat('DISPLAY','CAMERA TARGET POSITION Z',GLdummycube1.Position.z);
    config.free;
+end;
+
+procedure TForm1.Button2Click(Sender: TObject);
+var
+  x:Tvector;
+begin
+      OPT_OPT:=1;
+      DimVector(x,6);
+      X[1]:=strtofloat(L_rot_x.Text);
+      X[2]:=strtofloat(L_rot_y.Text);
+      X[3]:=strtofloat(L_rot_z.Text);
+      X[4]:=strtofloat(R_rot_x.Text);
+      X[5]:=strtofloat(R_rot_y.Text);
+      X[6]:=strtofloat(R_rot_z.Text);
+      caption:=floattostr(func(X));
+end;
+
+procedure TForm1.Button3Click(Sender: TObject);
+var
+  x:Tvector;
+begin
+      OPT_OPT:=2;
+      DimVector(x,6);
+      X[1]:=strtofloat(L_Ankle_x.Text);
+      X[2]:=strtofloat(L_Ankle_y.Text);
+      X[3]:=strtofloat(L_Ankle_z.Text);
+      X[4]:=strtofloat(R_Ankle_x.Text);
+      X[5]:=strtofloat(R_Ankle_y.Text);
+      X[6]:=strtofloat(R_Ankle_z.Text);
+      caption:=floattostr(func(X));
 end;
 
 procedure TForm1.Edit_Folder_ProcessingClick(Sender: TObject);
@@ -1552,16 +1451,6 @@ begin
   save_ini(0);
 end;
 
-procedure TForm1.Frame_Index_EditChange(Sender: TObject);
-begin
-  Frame_Index:=strtoint(Frame_Index_Edit.text);
-end;
-
-procedure TForm1.GAKneeButtonClick(Sender: TObject);
-begin
-   if nb_blocs>0 then GA_Opt(3);
-end;
-
 procedure TForm1.Edit_Run_Joint_AnglesClick(Sender: TObject);
 begin
     Calcul_Angles_articulaires(nom_mocap);
@@ -1569,14 +1458,12 @@ end;
 
 procedure TForm1.Calcul_Angles_articulaires(filename:string);
 var
-  xaxis,yaxis,zaxis,center,Lrot,Rrot,LCenter,RCenter,LAnkl,RAnkl:GLVectorgeometry.Tvector;
+  xaxis,yaxis,zaxis,LCenter,RCenter:GLVectorgeometry.Tvector;
   M,LShank,RShank,LThigh,RThigh:GLVectorgeometry.Tmatrix;
   outputfile:textfile;
   Q:TQuaternion;
-  i,nb_echantillons_valides:integer;
+  i:integer;
   LKN,RKN:array of GLVectorgeometry.tvector;
-  s:TSIDE;
-  d,moyenne:double;
   LEN_LSH,LEN_RSH,LEN_LTH,LEN_RTH:double;
   LKNEE_ANGLE,RKNEE_ANGLE:double;
   v1,v2,v3,v4:GLVectorgeometry.tvector;
@@ -1605,7 +1492,11 @@ begin
    RKN[i]:=Build_Shifted_Knee(i,strtofloat(R_Knee_Shift.Text),TSIDE.RIGHT);
   end;
 
+  if Folder_out_Name='' then
+  nom_ik:=ChangeFileExt(filename,'.ik')
+  else
   nom_ik:=Folder_out_Name+extractfilename(ChangeFileExt(filename,'.ik'));
+
   assignfile(outputfile,nom_ik);
   rewrite(outputfile);
 
@@ -1629,10 +1520,10 @@ begin
 
   for i:=0 to High(root) do
   begin
-    LEN_LTH:=moyenne+VectorLength(vectorsubtract(LKN[i],Lrot_TAB[i]));
-    LEN_RTH:=moyenne+VectorLength(vectorsubtract(RKN[i],Rrot_TAB[i]));
-    LEN_LSH:=moyenne+VectorLength(vectorsubtract(LKN[i],LAnkl_TAB[i]));
-    LEN_RSH:=moyenne+VectorLength(vectorsubtract(RKN[i],RAnkl_TAB[i]));
+    LEN_LTH:=LEN_LTH+VectorLength(vectorsubtract(LKN[i],Lrot_TAB[i]));
+    LEN_RTH:=LEN_RTH+VectorLength(vectorsubtract(RKN[i],Rrot_TAB[i]));
+    LEN_LSH:=LEN_LSH+VectorLength(vectorsubtract(LKN[i],LAnkl_TAB[i]));
+    LEN_RSH:=LEN_RSH+VectorLength(vectorsubtract(RKN[i],RAnkl_TAB[i]));
   end;
 
   //Calcul des longueurs
@@ -1669,6 +1560,14 @@ begin
     RKNEE_ANGLE:=RadtoDeg(GLVectorGeometry.ArcCos(VectorAngleCosine(RThigh.X,RShank.X)));
 
     M:=calc_Hip_Matrix(i);
+    Q:=QuaternionFromMatrix(M);
+    Writeln(outputfile,' ');
+    Writeln(outputfile,'HIP MATRIX : '+'  '+floattostr(M.x.x)+'  '+floattostr(M.y.x)+'  '+floattostr(M.z.x));
+    Writeln(outputfile,'                  : '+'  '+floattostr(M.x.y)+'  '+floattostr(M.y.y)+'  '+floattostr(M.z.y));
+    Writeln(outputfile,'                  : '+'  '+floattostr(M.x.z)+'  '+floattostr(M.y.z)+'  '+floattostr(M.z.z));
+    Writeln(outputfile,' ');
+    Writeln(outputfile,'HIP QUATERNION : '+'  '+floattostr(Q.RealPart)+'  '+floattostr(Q.ImagPart.X)+'  '+floattostr(Q.ImagPart.Y)+'  '+floattostr(Q.ImagPart.Z));
+
     InvertMatrix(M);
     LThigh:=MatrixMultiply(LThigh,M);
     Q:=QuaternionFromMatrix(LThigh);
@@ -1715,44 +1614,69 @@ begin
   closefile(outputfile);
 end;
 
-procedure TForm1.BitBtn1Click(Sender: TObject);
+procedure TForm1.BitBtn1MouseDown(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
 var
      s:string;
-begin
-  s:='1) charger un fichier de Motion Capture VICON au format .csv en double cliquant dans la boîte d''édition "Input Mocap File"'
-  +char(13)
+     begin
+ if button = mbRight then
+ begin
+   s:='1) Charger un fichier de Motion Capture VICON au format .csv en double-cliquant dans la boîte d''édition "Input Mocap File"'
+   +char(13)
+   +char(13)
   +'2) Déterminer les positions des têtes de fémur : cliquer sur "Broyden-Fletcher-Golfarb-Shanno" '+
   ' dans l''encart "Hip Joint Centers"'
+  +char(13)
   +char(13)
   +'3) Déterminer les positions des chevilles : cliquer sur "Broyden-Fletcher-Golfarb-Shanno" '+
   ' dans l''encart "Ankle Centers"'
   +char(13)
-  +'4) Déterminer les positions réelles des genoux : cliquer sur "Broyden-Fletcher-Golfarb-Shanno" '+
-  ' dans l''encart "Knee Joint Centers". Les marqueurs VICON sont positionnés sur la peau, ils sont donc décalés sur'+
-  ' l''axe de rotations des genoux pour les replacer aux centres des genoux."'
   +char(13)
-  +'5) cliquer sur "Compute Joint Angles" pour sauvegarder les variables cinématiques de l''essai dans un fichier homonyme du fichier Mocap'
-  +' avec l''extension .ik.  Cliquer sur ''Folder Processing'' pour effectuer l''analyse complète (calcul automatiques des centres d''articulations '
-  +' et sauvagarde des données) pour tous les fichiers MoCap présents dans le dossier.'
+  +'4) Déterminer les positions réelles des genoux : cliquer sur "Find Max Feasible Shift" '+
+  ' dans l''encart "Knee Joint Centers". Les marqueurs VICON sont positionnés sur la peau, on doit donc les décaler sur'+
+  ' les axes de rotation des genoux pour les replacer aux centres des genoux."'
+  +char(13)
+  +char(13)
+  +'5) Cliquer sur "Compute Joint Angles" pour sauvegarder l''évolution des variables cinématiques de l''essai dans un fichier homonyme du fichier Mocap'
+  +' avec l''extension .ik. '
+  +char(13)
+  +char(13)
+  +'6) Cliquer sur ''Folder Processing'' pour effectuer l''analyse complète (calcul automatiques des centres d''articulations '
+  +' et sauvegarde des données cinématiques) pour tous les fichiers MoCap présents dans le dossier "MoCap Data Folder" et '
+  +'sauvegarder les résultats dans le dossier spécifié dans le fichier ''config.ini'' (voir [RESULT FOLDER]).'
+  +char(13)
   +char(13)
   +'Cliquer sur "Display Lower limb''s Length" pour visualiser la longueur du membre de la jambe (cuisse ou tibia)'
   +'calculée à partir des centres de rotation optimisés (pelvis ou cheviles)';
-  s:='1) Load a VICON MoCap file by double-clicking the edit box named "Input Mocap File"'
+ end
+else
+begin
+ s:='1) Load a VICON MoCap file by double-clicking the edit box named "Input Mocap File"'
+ +char(13)
   +char(13)
-  +'2) In the "Ankle Centers" box, click on "Broyden-Fletcher-Golfarb-Shanno" to compute the rotation centers of the hip.'
+  +'2) In the "Ankle Centers" box, press "Broyden-Fletcher-Golfarb-Shanno" to compute the rotation centers of the hip.'
   +char(13)
-  +'3) In the "Hip Joint Centers" box, click on "Broyden-Fletcher-Golfarb-Shanno" to compute the rotation centers of the ankles'
   +char(13)
-  +'4) In the "Knee Joint Centers" box, click on "Broyden-Fletcher-Golfarb-Shanno" to compute the rotation center shifts of the knees '+
-  'along the pivot pins (the VICON markers are set on the skin then not exactly on the pin centers of the knees). This optimization computes the exact shift to move the marker in the center of the knee.'
+  +'3) In the "Hip Joint Centers" box, press "Broyden-Fletcher-Golfarb-Shanno" to compute the rotation centers of the ankles'
+ +char(13)
+ +char(13)
+  +'4) In the "Knee Joint Centers" box, click on "Find Max Feasible Shift" to compute the rotation center shifts of the knees '+
+  'along the pivot pins (the VICON markers are set on the skin then not exactly on the pin centers of the knees). This optimization '+
+  'computes the exact shift to move the marker in the center of the knee.'
   +char(13)
-  +'5) Click on  "Compute Joint Angles" to compute the kinematics variables of the whole test and save it in a file with the extension .ik. Click on ''Folder Processing'' to process all the files present in the selected folder. '+
-  'This means for each Mocap File in the folder, optimize all the Center positions and save the kinematics variables in the corrsponding output files.'
   +char(13)
-  +'Click on "Display Lower limb''s Length" to visualize the variation of the leg''s lenght (shank body or thigh body) all along the experimental test and'
+  +'5) Click on  "Compute Joint Angles" to compute the kinematics variables of the whole test and save it in a file with the extension .ik. '
+  +char(13)
+  +char(13)
+  +'6) Click on ''Folder Processing'' to process all the files present in the selected folder ("MoCap Data Folder"). '+
+  'This means for each Mocap File in the folder, optimize all the Center positions and save the kinematics variables in the corresponding output files '
+  +'in the folder specified in the config file ''config.ini'' (see section [RESULT FOLDER])).'
+  +char(13)
+  +char(13)
+  +'Press "Display Lower limb''s Length" to visualize the variation of the leg''s lenght (shank body or thigh body) all along the experimental test and'
   +' given the set of coordinates for the rotation centers.';
-
-  ShowMessage (s);
+ end;
+ showmessage(s);
 end;
 
 procedure TForm1.CheckBoxChange(Sender: TObject);
@@ -1862,8 +1786,7 @@ var
   Center:TVector;
   H_inv : TMatrix;  { Inverse Hessian matrix }
   F_min : double;    { Function value at minimum }
-  Det   : double;    { Determinant of hessian }
-  I, J  : Integer;  { Loop variables }
+  //Det   : double;    { Determinant of hessian }
 
 begin
 
