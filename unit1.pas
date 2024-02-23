@@ -1283,6 +1283,7 @@ var
   v1,v2,v3,v4:GLVectorgeometry.tvector;
 
 begin
+ decimalseparator:='.';
  v1:=vectormake(strtofloat(L_rot_x.Text),strtofloat(L_rot_y.Text),strtofloat(L_rot_z.Text));
  v2:=vectormake(strtofloat(R_rot_x.Text),strtofloat(R_rot_y.Text),strtofloat(R_rot_z.Text));
  v3:=vectormake(strtofloat(L_Ankle_x.Text),strtofloat(L_Ankle_y.Text),strtofloat(L_Ankle_z.Text));
@@ -1366,6 +1367,7 @@ procedure TForm1.Button2Click(Sender: TObject);
 var
   x:Tvector;
 begin
+      decimalseparator:='.';
       OPT_OPT:=1;
       DimVector(x,6);
       X[1]:=strtofloat(L_rot_x.Text);
@@ -1381,6 +1383,7 @@ procedure TForm1.Button3Click(Sender: TObject);
 var
   x:Tvector;
 begin
+      decimalseparator:='.';
       OPT_OPT:=2;
       DimVector(x,6);
       X[1]:=strtofloat(L_Ankle_x.Text);
@@ -1824,6 +1827,8 @@ var
   //Det   : double;    { Determinant of hessian }
 
 begin
+
+    decimalseparator:='.';
 
     OPT_OPt:=Option;
     NVar:=6;
