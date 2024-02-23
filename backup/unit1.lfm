@@ -1,0 +1,2050 @@
+object Form1: TForm1
+  Left = 67
+  Height = 833
+  Top = 71
+  Width = 1178
+  Caption = 'Lower Limbs Inverse Kinematics'
+  ClientHeight = 833
+  ClientWidth = 1178
+  Color = clActiveCaption
+  OnClose = FormClose
+  OnCreate = FormCreate
+  LCLVersion = '2.2.4.0'
+  object MoCapFileEdit: TLabeledEdit
+    Left = 112
+    Height = 23
+    Top = 12
+    Width = 448
+    EditLabel.Height = 15
+    EditLabel.Width = 89
+    EditLabel.Caption = 'Input Mocap File'
+    EditLabel.ParentColor = False
+    LabelPosition = lpLeft
+    ReadOnly = True
+    TabOrder = 0
+    OnDblClick = MoCapFileEditDblClick
+  end
+  object GLSceneViewer1: TGLSceneViewer
+    Left = 16
+    Height = 368
+    Top = 40
+    Width = 504
+    Camera = GLCamera1
+    Buffer.AmbientColor.Red = 0.200000002980232
+    Buffer.AmbientColor.Green = 0.200000002980232
+    Buffer.AmbientColor.Blue = 0.200000002980232
+    Buffer.AmbientColor.Alpha = 1
+    FieldOfView = 149.595184326172
+    OnMouseDown = GLSceneViewer1MouseDown
+    OnMouseMove = GLSceneViewer1MouseMove
+    OnMouseWheel = GLSceneViewer1MouseWheel
+    TabOrder = 1
+  end
+  object TrackBar1: TTrackBar
+    Left = 8
+    Height = 23
+    Top = 432
+    Width = 504
+    OnChange = TrackBar1Change
+    Position = 0
+    TabOrder = 2
+  end
+  object ChartButton: TButton
+    Left = 160
+    Height = 25
+    Top = 776
+    Width = 168
+    Caption = 'Display Lower Limb''s Length'
+    OnClick = ChartButtonClick
+    TabOrder = 3
+  end
+  object Chart1: TChart
+    Left = 16
+    Height = 312
+    Top = 456
+    Width = 440
+    AxisList = <    
+      item
+        Marks.LabelBrush.Style = bsClear
+        Minors = <>
+        Title.LabelFont.Orientation = 900
+        Title.Caption = '(mm)'
+        Title.LabelBrush.Style = bsClear
+      end    
+      item
+        Alignment = calBottom
+        Marks.LabelBrush.Style = bsClear
+        Minors = <>
+        Title.LabelBrush.Style = bsClear
+      end>
+    Extent.UseYMin = True
+    Title.Text.Strings = (
+      'Length (mm)'
+    )
+    Title.Visible = True
+    object LineSeries1: TLineSeries
+      LinePen.Color = clLime
+    end
+    object LineSeries2: TLineSeries
+      LinePen.Color = clAqua
+    end
+    object LineSeries3: TLineSeries
+      LinePen.Color = clFuchsia
+    end
+    object LineSeries4: TLineSeries
+      LinePen.Color = clBlue
+    end
+  end
+  object GroupBox4: TGroupBox
+    Left = 728
+    Height = 407
+    Top = 47
+    Width = 217
+    Caption = 'Hip Joint Centers'
+    ClientHeight = 387
+    ClientWidth = 213
+    ParentFont = False
+    TabOrder = 5
+    object GroupBox1: TGroupBox
+      Left = 16
+      Height = 136
+      Top = 0
+      Width = 184
+      Caption = 'Left Hip Joint'
+      ClientHeight = 116
+      ClientWidth = 180
+      Color = clLime
+      ParentBackground = False
+      ParentColor = False
+      ParentFont = False
+      TabOrder = 0
+      object L_rot_x: TLabeledEdit
+        Left = 80
+        Height = 23
+        Top = 16
+        Width = 80
+        EditLabel.Height = 15
+        EditLabel.Width = 41
+        EditLabel.Caption = 'X coord'
+        EditLabel.ParentColor = False
+        LabelPosition = lpLeft
+        TabOrder = 0
+        Text = '0'
+        OnChange = L_rot_xChange
+      end
+      object L_rot_y: TLabeledEdit
+        Left = 80
+        Height = 23
+        Top = 48
+        Width = 80
+        EditLabel.Height = 15
+        EditLabel.Width = 41
+        EditLabel.Caption = 'Y coord'
+        EditLabel.ParentColor = False
+        LabelPosition = lpLeft
+        TabOrder = 1
+        Text = '0'
+        OnChange = L_rot_yChange
+      end
+      object L_rot_z: TLabeledEdit
+        Left = 80
+        Height = 23
+        Top = 80
+        Width = 80
+        EditLabel.Height = 15
+        EditLabel.Width = 41
+        EditLabel.Caption = 'Z coord'
+        EditLabel.ParentColor = False
+        LabelPosition = lpLeft
+        TabOrder = 2
+        Text = '0'
+        OnChange = L_rot_zChange
+      end
+    end
+    object GroupBox2: TGroupBox
+      Left = 16
+      Height = 128
+      Top = 144
+      Width = 184
+      Caption = 'Right Hip Joint'
+      ClientHeight = 108
+      ClientWidth = 180
+      Color = clAqua
+      ParentBackground = False
+      ParentColor = False
+      TabOrder = 1
+      object R_rot_x: TLabeledEdit
+        Left = 80
+        Height = 23
+        Top = 8
+        Width = 80
+        EditLabel.Height = 15
+        EditLabel.Width = 41
+        EditLabel.Caption = 'X coord'
+        EditLabel.ParentColor = False
+        LabelPosition = lpLeft
+        TabOrder = 0
+        Text = '0'
+        OnChange = R_rot_xChange
+      end
+      object R_rot_y: TLabeledEdit
+        Left = 80
+        Height = 23
+        Top = 40
+        Width = 80
+        EditLabel.Height = 15
+        EditLabel.Width = 41
+        EditLabel.Caption = 'Y coord'
+        EditLabel.ParentColor = False
+        LabelPosition = lpLeft
+        TabOrder = 1
+        Text = '0'
+        OnChange = R_rot_yChange
+      end
+      object R_rot_z: TLabeledEdit
+        Left = 80
+        Height = 23
+        Top = 72
+        Width = 80
+        EditLabel.Height = 15
+        EditLabel.Width = 41
+        EditLabel.Caption = 'Z coord'
+        EditLabel.ParentColor = False
+        LabelPosition = lpLeft
+        TabOrder = 2
+        Text = '0'
+        OnChange = R_rot_zChange
+      end
+    end
+    object SAVECapella: TButton
+      Left = 64
+      Height = 25
+      Top = 280
+      Width = 75
+      Caption = 'Save'
+      OnClick = SAVECapellaClick
+      TabOrder = 2
+    end
+    object GroupBox3: TGroupBox
+      Left = 8
+      Height = 64
+      Top = 320
+      Width = 200
+      Caption = 'Optimization of Hip Joint Centers'
+      ClientHeight = 44
+      ClientWidth = 196
+      TabOrder = 3
+      object LMPatellaButton: TButton
+        Left = 2
+        Height = 25
+        Top = 8
+        Width = 192
+        Caption = 'Broyden-Fletcher-Goldfarb-Shanno'
+        OnClick = BFGS_OptPatellaButtonClick
+        TabOrder = 0
+      end
+      object Button2: TButton
+        Left = 143
+        Height = 15
+        Top = 32
+        Width = 56
+        Caption = 'Cost Function'
+        Font.Height = -8
+        OnClick = Button2Click
+        ParentFont = False
+        TabOrder = 1
+      end
+      object ToggleBox1: TToggleBox
+        Left = 2
+        Height = 15
+        Top = 31
+        Width = 43
+        Caption = 'Reset'
+        Font.Height = -8
+        OnChange = ToggleBox1Change
+        ParentFont = False
+        TabOrder = 2
+      end
+    end
+  end
+  object GroupBox5: TGroupBox
+    Left = 952
+    Height = 408
+    Top = 47
+    Width = 217
+    Caption = 'Ankle Centers'
+    ClientHeight = 388
+    ClientWidth = 213
+    TabOrder = 6
+    object GroupBox6: TGroupBox
+      Left = 17
+      Height = 136
+      Top = 0
+      Width = 184
+      Caption = 'Left Foot'
+      ClientHeight = 116
+      ClientWidth = 180
+      Color = clFuchsia
+      ParentBackground = False
+      ParentColor = False
+      TabOrder = 0
+      object L_Ankle_x: TLabeledEdit
+        Left = 80
+        Height = 23
+        Top = 16
+        Width = 80
+        EditLabel.Height = 15
+        EditLabel.Width = 41
+        EditLabel.Caption = 'X coord'
+        EditLabel.ParentColor = False
+        LabelPosition = lpLeft
+        TabOrder = 0
+        Text = '0'
+        OnChange = L_Ankle_xChange
+      end
+      object L_Ankle_y: TLabeledEdit
+        Left = 80
+        Height = 23
+        Top = 48
+        Width = 80
+        EditLabel.Height = 15
+        EditLabel.Width = 41
+        EditLabel.Caption = 'Y coord'
+        EditLabel.ParentColor = False
+        LabelPosition = lpLeft
+        TabOrder = 1
+        Text = '0'
+        OnChange = L_Ankle_yChange
+      end
+      object L_Ankle_z: TLabeledEdit
+        Left = 79
+        Height = 23
+        Top = 80
+        Width = 80
+        EditLabel.Height = 15
+        EditLabel.Width = 41
+        EditLabel.Caption = 'Z coord'
+        EditLabel.ParentColor = False
+        LabelPosition = lpLeft
+        TabOrder = 2
+        Text = '0'
+        OnChange = L_Ankle_zChange
+      end
+    end
+    object GroupBox7: TGroupBox
+      Left = 16
+      Height = 128
+      Top = 144
+      Width = 184
+      Caption = 'Right Foot'
+      ClientHeight = 108
+      ClientWidth = 180
+      Color = clBlue
+      ParentBackground = False
+      ParentColor = False
+      TabOrder = 1
+      object R_Ankle_x: TLabeledEdit
+        Left = 80
+        Height = 23
+        Top = 8
+        Width = 80
+        EditLabel.Height = 15
+        EditLabel.Width = 41
+        EditLabel.Caption = 'X coord'
+        EditLabel.ParentColor = False
+        LabelPosition = lpLeft
+        TabOrder = 0
+        Text = '0'
+        OnChange = R_Ankle_xChange
+      end
+      object R_Ankle_y: TLabeledEdit
+        Left = 81
+        Height = 23
+        Top = 40
+        Width = 80
+        EditLabel.Height = 15
+        EditLabel.Width = 41
+        EditLabel.Caption = 'Y coord'
+        EditLabel.ParentColor = False
+        LabelPosition = lpLeft
+        TabOrder = 1
+        Text = '0'
+        OnChange = R_Ankle_yChange
+      end
+      object R_Ankle_z: TLabeledEdit
+        Left = 81
+        Height = 23
+        Top = 72
+        Width = 80
+        EditLabel.Height = 15
+        EditLabel.Width = 41
+        EditLabel.Caption = 'Z coord'
+        EditLabel.ParentColor = False
+        LabelPosition = lpLeft
+        TabOrder = 2
+        Text = '0'
+        OnChange = R_Ankle_zChange
+      end
+    end
+    object SAVEAnkle: TButton
+      Left = 64
+      Height = 25
+      Top = 280
+      Width = 75
+      Caption = 'Save'
+      OnClick = SAVEAnkleClick
+      TabOrder = 2
+    end
+    object GroupBox8: TGroupBox
+      Left = 8
+      Height = 64
+      Top = 320
+      Width = 201
+      Caption = 'Optimization of Ankle Joint Centers'
+      ClientHeight = 44
+      ClientWidth = 197
+      TabOrder = 3
+      object LMAnkleButton: TButton
+        Left = 3
+        Height = 25
+        Top = 8
+        Width = 192
+        Caption = 'Broyden-Fletcher-Goldfarb-Shanno'
+        OnClick = BFGS_OptAnkleButtonClick
+        TabOrder = 0
+      end
+      object Button3: TButton
+        Left = 148
+        Height = 15
+        Top = 31
+        Width = 51
+        Caption = 'Cost Function'
+        Font.Height = -8
+        OnClick = Button3Click
+        ParentFont = False
+        TabOrder = 1
+      end
+      object ToggleBox2: TToggleBox
+        Left = 2
+        Height = 15
+        Top = 29
+        Width = 43
+        Caption = 'Reset'
+        Font.Height = -8
+        OnChange = ToggleBox2Change
+        ParentFont = False
+        TabOrder = 2
+      end
+    end
+  end
+  object CheckGroup1: TCheckGroup
+    Left = 544
+    Height = 280
+    Top = 56
+    Width = 130
+    AutoFill = True
+    Caption = 'Show/Hide'
+    ChildSizing.LeftRightSpacing = 6
+    ChildSizing.TopBottomSpacing = 6
+    ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+    ChildSizing.EnlargeVertical = crsHomogenousChildResize
+    ChildSizing.ShrinkHorizontal = crsScaleChilds
+    ChildSizing.ShrinkVertical = crsScaleChilds
+    ChildSizing.Layout = cclLeftToRightThenTopToBottom
+    ChildSizing.ControlsPerLine = 1
+    ClientHeight = 260
+    ClientWidth = 126
+    TabOrder = 7
+    object CheckBox1: TCheckBox
+      Left = 6
+      Height = 23
+      Top = 6
+      Width = 114
+      Caption = 'Hip axes'
+      OnChange = CheckBoxChange
+      TabOrder = 0
+    end
+    object CheckBox2: TCheckBox
+      Left = 6
+      Height = 23
+      Top = 29
+      Width = 114
+      Caption = 'Left Foot axes'
+      OnChange = CheckBoxChange
+      TabOrder = 1
+    end
+    object CheckBox3: TCheckBox
+      Left = 6
+      Height = 23
+      Top = 52
+      Width = 114
+      Caption = 'Right Foot axes'
+      OnChange = CheckBoxChange
+      TabOrder = 2
+    end
+    object CheckBox4: TCheckBox
+      Left = 6
+      Height = 23
+      Top = 75
+      Width = 114
+      Caption = 'Body Lines'
+      Checked = True
+      OnChange = CheckBoxChange
+      State = cbChecked
+      TabOrder = 3
+    end
+    object CheckBox5: TCheckBox
+      Left = 6
+      Height = 23
+      Top = 98
+      Width = 114
+      Caption = 'Left Knee axes'
+      Checked = True
+      OnChange = CheckBoxChange
+      State = cbChecked
+      TabOrder = 4
+    end
+    object CheckBox6: TCheckBox
+      Left = 6
+      Height = 23
+      Top = 121
+      Width = 114
+      Caption = 'Right Knee axes'
+      Checked = True
+      OnChange = CheckBoxChange
+      State = cbChecked
+      TabOrder = 5
+    end
+    object CheckBox7: TCheckBox
+      Left = 6
+      Height = 23
+      Top = 144
+      Width = 114
+      Caption = 'Hip Markers'
+      OnChange = CheckBoxChange
+      TabOrder = 6
+    end
+    object CheckBox8: TCheckBox
+      Left = 6
+      Height = 23
+      Top = 167
+      Width = 114
+      Caption = 'Feet Markers'
+      OnChange = CheckBoxChange
+      TabOrder = 7
+    end
+    object CheckBox9: TCheckBox
+      Left = 6
+      Height = 23
+      Top = 190
+      Width = 114
+      Caption = 'Knee Markers'
+      OnChange = CheckBoxChange
+      TabOrder = 8
+    end
+    object CheckBox10: TCheckBox
+      Left = 6
+      Height = 22
+      Top = 213
+      Width = 114
+      Caption = 'Thigh Markers'
+      OnChange = CheckBoxChange
+      TabOrder = 9
+    end
+    object CheckBox11: TCheckBox
+      Left = 6
+      Height = 19
+      Top = 235
+      Width = 114
+      Caption = 'Bones'
+      OnChange = CheckBoxChange
+      TabOrder = 10
+    end
+  end
+  object StatusBar1: TStatusBar
+    Left = 0
+    Height = 23
+    Top = 810
+    Width = 1178
+    Panels = <    
+      item
+        Text = 'Pierre LEMERLE'
+        Width = 200
+      end    
+      item
+        Text = '12/02/2024'
+        Width = 100
+      end    
+      item
+        Alignment = taRightJustify
+        Text = 'V 1.0     '
+        Width = 100
+      end>
+    SimplePanel = False
+  end
+  object Button1: TButton
+    Left = 352
+    Height = 16
+    Top = 416
+    Width = 104
+    Caption = 'Save Cam Target Position'
+    Font.Height = -9
+    OnClick = Button1Click
+    ParentFont = False
+    TabOrder = 8
+  end
+  object BitBtn1: TBitBtn
+    Left = 752
+    Height = 29
+    Hint = 'Left Click : English'#13#10'Right Click : French'
+    Top = 608
+    Width = 29
+    Glyph.Data = {
+      22050000424D2205000000000000360000002800000014000000150000000100
+      180000000000EC040000C30E0000C30E00000000000000000000FCFAF9FCFAF9
+      FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFA
+      F9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FC
+      FAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9
+      FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFA
+      F9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FC
+      FAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9
+      FCFAF9FFFFE0F19623EE9527FA9B23F5F6FAFAFAFAFCFAF9FCFAF9FCFAF9FCFA
+      F9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9F6
+      9418F59720F39621F39621FFFCE2FCFAFAFCFAF9FCFAF9FCFAF9FCFAF9FCFAF9
+      FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9ED9B35F697
+      1FF39621EF9624FFFFEFFCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FC
+      FAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCF6EFF3BB74EB9220
+      FFFEF4FFFCF3FEFBF7FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFA
+      F9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FC
+      FAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9
+      FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FFFAF0F69924F89924F79722FCFAF9FCFA
+      F9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FC
+      FAF9FCFAF9FCFAF9FCFAF9F9F9F9F6971FF39621F49722FFFBFAFCFAF9FCFAF9
+      FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFA
+      F9FCFAF9FCFAF9FAFAFAF19623F39621F39621E59837FFFBF6FCFAF9FCFAF9FC
+      FAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9
+      FCFAF9FCFAF9EB982FEE9526F39621F19623E2922DFFFBF4FCFAF9FCFAF9FCFA
+      F9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FC
+      FAF9FCFDF9FE9F20EE9527F39621FC981ADF9231FFFAF9FCFAF9FCFAF9FCFAF9
+      FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFA
+      F9FCFAF9F29724F39621F39621F39621FFFFF0FCFAF9FCFAF9FCFAF9FCFAF9FC
+      FAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9
+      F7F9FAF39621F39621F39621F29724FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFA
+      F9FCFAF9FCFAF9FAF7FFF69620F59621F59621DA962BF8FCF7FCFAF9F3F6FAF3
+      9621F39621F39621F8981DFCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9
+      FCFAF9F8FAFBF59720F19623F39621EC9527FFFFF1FFFDF0FFFFE3F39621F396
+      21F39621FD981EFCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FA
+      FAFAFFFDDAF8981DF39621F59720F19623F19623F19623F39621EA942AF69620
+      FFFFD3FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FFFE
+      FAE99934F39621F39621F39621F39621F39621F39621F69620E9942CFAFAFAFC
+      FAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FFFAF7F8FAFB
+      FFFCF2F99A22F79922F59720EE9523FA981CFFFFE1F6F9FDFCFAF9FCFAF9FCFA
+      F9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FC
+      FAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9FCFAF9
+      FCFAF9FCFAF9
+    }
+    GlyphShowMode = gsmAlways
+    Margin = 1
+    OnMouseDown = BitBtn1MouseDown
+    ParentShowHint = False
+    ShowHint = True
+    TabOrder = 10
+  end
+  object Label1: TLabel
+    Left = 16
+    Height = 13
+    Top = 416
+    Width = 322
+    Caption = 'NUMPAD 4,6:CamX.position ; 2,8:Cam.Y.position ; 7,9:Cam.Z.position'
+    Font.Height = -11
+    Font.Style = [fsItalic]
+    ParentColor = False
+    ParentFont = False
+  end
+  object GroupBox9: TGroupBox
+    Left = 952
+    Height = 320
+    Top = 456
+    Width = 217
+    Caption = 'Knee Joint Centers'
+    ClientHeight = 300
+    ClientWidth = 213
+    TabOrder = 11
+    object GroupBox10: TGroupBox
+      Left = 16
+      Height = 64
+      Top = 0
+      Width = 192
+      Caption = 'Left Knee'
+      ClientHeight = 44
+      ClientWidth = 188
+      Color = clYellow
+      ParentBackground = False
+      ParentColor = False
+      TabOrder = 0
+      object L_Knee_Shift: TLabeledEdit
+        Left = 104
+        Height = 23
+        Top = 8
+        Width = 80
+        EditLabel.Height = 15
+        EditLabel.Width = 98
+        EditLabel.Caption = 'Transv. Shift Angle'
+        EditLabel.ParentColor = False
+        LabelPosition = lpLeft
+        TabOrder = 0
+        Text = '0'
+        OnChange = L_Knee_ShiftChange
+      end
+    end
+    object GroupBox11: TGroupBox
+      Left = 16
+      Height = 64
+      Top = 80
+      Width = 192
+      Caption = 'Right Knee'
+      ClientHeight = 44
+      ClientWidth = 188
+      Color = clYellow
+      ParentBackground = False
+      ParentColor = False
+      TabOrder = 1
+      object R_Knee_Shift: TLabeledEdit
+        Left = 104
+        Height = 23
+        Top = 8
+        Width = 80
+        EditLabel.Height = 15
+        EditLabel.Width = 98
+        EditLabel.Caption = 'Transv. Shift Angle'
+        EditLabel.ParentColor = False
+        LabelPosition = lpLeft
+        TabOrder = 0
+        Text = '0'
+        OnChange = R_Knee_ShiftChange
+      end
+    end
+    object SAVEAnkle1: TButton
+      Left = 64
+      Height = 25
+      Top = 200
+      Width = 75
+      Caption = 'Save'
+      OnClick = SAVEAnkle1Click
+      TabOrder = 2
+    end
+    object GroupBox12: TGroupBox
+      Left = 8
+      Height = 64
+      Top = 232
+      Width = 201
+      Caption = 'Optimization of Ankle Joint Centers'
+      ClientHeight = 44
+      ClientWidth = 197
+      TabOrder = 3
+      object LMKneeButton: TButton
+        Left = 16
+        Height = 25
+        Top = 8
+        Width = 171
+        Caption = 'Find Max Feasible Shift'
+        OnClick = LMKneeButtonClick
+        TabOrder = 0
+      end
+    end
+  end
+  object frame_nb_edit: TEdit
+    Left = 512
+    Height = 20
+    Top = 432
+    Width = 40
+    Alignment = taCenter
+    Color = clYellow
+    Font.Height = -9
+    ParentFont = False
+    ReadOnly = True
+    TabOrder = 12
+    Text = '0'
+  end
+  object Panel5: TPanel
+    Left = 456
+    Height = 152
+    Top = 616
+    Width = 144
+    ClientHeight = 152
+    ClientWidth = 144
+    TabOrder = 13
+    object Panel1: TPanel
+      Left = 8
+      Height = 18
+      Top = 80
+      Width = 26
+      Color = clFuchsia
+      ParentColor = False
+      TabOrder = 0
+    end
+    object Panel2: TPanel
+      Left = 8
+      Height = 18
+      Top = 106
+      Width = 26
+      Color = clBlue
+      ParentColor = False
+      TabOrder = 1
+    end
+    object Panel3: TPanel
+      Left = 8
+      Height = 18
+      Top = 32
+      Width = 26
+      Color = clLime
+      ParentColor = False
+      TabOrder = 2
+    end
+    object Panel4: TPanel
+      Left = 8
+      Height = 18
+      Top = 56
+      Width = 26
+      Color = clAqua
+      ParentColor = False
+      TabOrder = 3
+    end
+    object CheckGroup2: TCheckGroup
+      Left = 40
+      Height = 136
+      Top = 5
+      Width = 96
+      AutoFill = True
+      Caption = 'Display Options'
+      ChildSizing.LeftRightSpacing = 6
+      ChildSizing.TopBottomSpacing = 6
+      ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+      ChildSizing.EnlargeVertical = crsHomogenousChildResize
+      ChildSizing.ShrinkHorizontal = crsScaleChilds
+      ChildSizing.ShrinkVertical = crsScaleChilds
+      ChildSizing.Layout = cclLeftToRightThenTopToBottom
+      ChildSizing.ControlsPerLine = 1
+      ClientHeight = 116
+      ClientWidth = 92
+      Color = clActiveCaption
+      ParentBackground = False
+      ParentFont = False
+      ParentColor = False
+      TabOrder = 4
+      object CBLTH: TCheckBox
+        Left = 6
+        Height = 26
+        Top = 6
+        Width = 80
+        Caption = 'Left Thigh'
+        Checked = True
+        Color = clActiveCaption
+        Font.Color = clRed
+        OnChange = DisplayOptionChange
+        ParentColor = False
+        ParentFont = False
+        State = cbChecked
+        TabOrder = 0
+      end
+      object CBRTH: TCheckBox
+        Left = 6
+        Height = 26
+        Top = 32
+        Width = 80
+        Caption = 'Right Thigh'
+        Checked = True
+        Color = clMenuText
+        OnChange = DisplayOptionChange
+        ParentColor = False
+        ParentFont = False
+        State = cbChecked
+        TabOrder = 1
+      end
+      object CBLSH: TCheckBox
+        Left = 6
+        Height = 26
+        Top = 58
+        Width = 80
+        Caption = 'Left Shank'
+        Checked = True
+        OnChange = DisplayOptionChange
+        State = cbChecked
+        TabOrder = 2
+      end
+      object CBRSH: TCheckBox
+        Left = 6
+        Height = 26
+        Top = 84
+        Width = 80
+        Caption = 'Right Shank'
+        Checked = True
+        OnChange = DisplayOptionChange
+        State = cbChecked
+        TabOrder = 3
+      end
+    end
+  end
+  object GroupBox13: TGroupBox
+    Left = 672
+    Height = 105
+    Top = 656
+    Width = 185
+    Caption = 'Inverse Kinematics Analysis'
+    ClientHeight = 85
+    ClientWidth = 181
+    TabOrder = 14
+    object Edit_Run_Joint_Angles: TButton
+      Left = 24
+      Height = 25
+      Top = 8
+      Width = 136
+      Caption = 'Compute Joint Angles'
+      Font.Style = [fsBold]
+      OnClick = Edit_Run_Joint_AnglesClick
+      ParentFont = False
+      TabOrder = 0
+    end
+    object Edit_Folder_Processing: TButton
+      Left = 24
+      Height = 25
+      Top = 48
+      Width = 136
+      Caption = 'Folder Processing'
+      Font.Style = [fsBold]
+      OnClick = Edit_Folder_ProcessingClick
+      ParentFont = False
+      TabOrder = 1
+    end
+  end
+  object FolderEdit: TLabeledEdit
+    Left = 736
+    Height = 23
+    Top = 12
+    Width = 400
+    EditLabel.Height = 15
+    EditLabel.Width = 102
+    EditLabel.Caption = 'MoCap Data Folder'
+    EditLabel.ParentColor = False
+    LabelPosition = lpLeft
+    ReadOnly = True
+    TabOrder = 15
+    OnDblClick = FolderEditDblClick
+  end
+  object OpenDialog1: TOpenDialog
+    Filter = '*.csv|*.csv'
+    Left = 696
+    Top = 464
+  end
+  object GLScene1: TGLScene
+    Left = 608
+    Top = 464
+    object GLDummyCube2: TGLDummyCube
+      CubeSize = 1
+      EdgeColor.Red = 1
+      EdgeColor.Green = 1
+      EdgeColor.Blue = 1
+      EdgeColor.Alpha = 1
+      object GLDummyCube1: TGLDummyCube
+        Direction.Coordinates = {
+          000000000000803F0000000000000000
+        }
+        PitchAngle = 90
+        ShowAxes = True
+        Up.Coordinates = {
+          0000000000000000000080BF00000000
+        }
+        CubeSize = 1
+        EdgeColor.Red = 1
+        EdgeColor.Green = 1
+        EdgeColor.Blue = 1
+        EdgeColor.Alpha = 1
+        object GLLASI: TGLSphere
+          Material.BackProperties.Ambient.Red = 0.200000002980232
+          Material.BackProperties.Ambient.Green = 0.200000002980232
+          Material.BackProperties.Ambient.Blue = 0.200000002980232
+          Material.BackProperties.Ambient.Alpha = 1
+          Material.BackProperties.Diffuse.Red = 0.800000011920929
+          Material.BackProperties.Diffuse.Green = 0.800000011920929
+          Material.BackProperties.Diffuse.Blue = 0.800000011920929
+          Material.BackProperties.Diffuse.Alpha = 1
+          Material.BackProperties.Emission.Alpha = 1
+          Material.BackProperties.Specular.Alpha = 1
+          Material.FrontProperties.Ambient.Red = 0.200000002980232
+          Material.FrontProperties.Ambient.Green = 0.200000002980232
+          Material.FrontProperties.Ambient.Blue = 0.200000002980232
+          Material.FrontProperties.Ambient.Alpha = 1
+          Material.FrontProperties.Diffuse.Red = 0.800000011920929
+          Material.FrontProperties.Diffuse.Green = 0.800000011920929
+          Material.FrontProperties.Diffuse.Blue = 0.800000011920929
+          Material.FrontProperties.Diffuse.Alpha = 1
+          Material.FrontProperties.Emission.Red = 1
+          Material.FrontProperties.Emission.Alpha = 1
+          Material.FrontProperties.Emission.Color = {
+            0000803F00000000000000000000803F
+          }
+          Material.FrontProperties.Specular.Alpha = 1
+          Radius = 0.00999999977648258
+          object Lbl_LASI: TGLAbsoluteHUDText
+            BitmapFont = GLWindowsBitmapFont1
+            Text = 'LASI'
+            ModulateColor.Red = 1
+            ModulateColor.Green = 1
+            ModulateColor.Blue = 1
+            ModulateColor.Alpha = 1
+          end
+        end
+        object GLRASI: TGLSphere
+          Material.BackProperties.Ambient.Red = 0.200000002980232
+          Material.BackProperties.Ambient.Green = 0.200000002980232
+          Material.BackProperties.Ambient.Blue = 0.200000002980232
+          Material.BackProperties.Ambient.Alpha = 1
+          Material.BackProperties.Diffuse.Red = 0.800000011920929
+          Material.BackProperties.Diffuse.Green = 0.800000011920929
+          Material.BackProperties.Diffuse.Blue = 0.800000011920929
+          Material.BackProperties.Diffuse.Alpha = 1
+          Material.BackProperties.Emission.Alpha = 1
+          Material.BackProperties.Specular.Alpha = 1
+          Material.FrontProperties.Ambient.Red = 0.200000002980232
+          Material.FrontProperties.Ambient.Green = 0.200000002980232
+          Material.FrontProperties.Ambient.Blue = 0.200000002980232
+          Material.FrontProperties.Ambient.Alpha = 1
+          Material.FrontProperties.Diffuse.Red = 0.800000011920929
+          Material.FrontProperties.Diffuse.Green = 0.800000011920929
+          Material.FrontProperties.Diffuse.Blue = 0.800000011920929
+          Material.FrontProperties.Diffuse.Alpha = 1
+          Material.FrontProperties.Emission.Red = 1
+          Material.FrontProperties.Emission.Alpha = 1
+          Material.FrontProperties.Emission.Color = {
+            0000803F00000000000000000000803F
+          }
+          Material.FrontProperties.Specular.Alpha = 1
+          Radius = 0.00999999977648258
+          object lbl_RASI: TGLAbsoluteHUDText
+            BitmapFont = GLWindowsBitmapFont1
+            Text = 'RASI'
+            ModulateColor.Red = 1
+            ModulateColor.Green = 1
+            ModulateColor.Blue = 1
+            ModulateColor.Alpha = 1
+          end
+        end
+        object GLroot: TGLSphere
+          Material.BackProperties.Ambient.Red = 0.200000002980232
+          Material.BackProperties.Ambient.Green = 0.200000002980232
+          Material.BackProperties.Ambient.Blue = 0.200000002980232
+          Material.BackProperties.Ambient.Alpha = 1
+          Material.BackProperties.Diffuse.Red = 0.800000011920929
+          Material.BackProperties.Diffuse.Green = 0.800000011920929
+          Material.BackProperties.Diffuse.Blue = 0.800000011920929
+          Material.BackProperties.Diffuse.Alpha = 1
+          Material.BackProperties.Emission.Alpha = 1
+          Material.BackProperties.Specular.Alpha = 1
+          Material.FrontProperties.Ambient.Red = 0.200000002980232
+          Material.FrontProperties.Ambient.Green = 0.200000002980232
+          Material.FrontProperties.Ambient.Blue = 0.200000002980232
+          Material.FrontProperties.Ambient.Alpha = 1
+          Material.FrontProperties.Diffuse.Red = 0.800000011920929
+          Material.FrontProperties.Diffuse.Green = 0.800000011920929
+          Material.FrontProperties.Diffuse.Blue = 0.800000011920929
+          Material.FrontProperties.Diffuse.Alpha = 1
+          Material.FrontProperties.Emission.Red = 1
+          Material.FrontProperties.Emission.Alpha = 1
+          Material.FrontProperties.Emission.Color = {
+            0000803F00000000000000000000803F
+          }
+          Material.FrontProperties.Specular.Alpha = 1
+          Radius = 0.00999999977648258
+          object lbl_Root: TGLAbsoluteHUDText
+            BitmapFont = GLWindowsBitmapFont1
+            Text = 'Root'
+            ModulateColor.Red = 1
+            ModulateColor.Green = 1
+            ModulateColor.Blue = 1
+            ModulateColor.Alpha = 1
+          end
+        end
+        object GLLPSI: TGLSphere
+          Material.BackProperties.Ambient.Red = 0.200000002980232
+          Material.BackProperties.Ambient.Green = 0.200000002980232
+          Material.BackProperties.Ambient.Blue = 0.200000002980232
+          Material.BackProperties.Ambient.Alpha = 1
+          Material.BackProperties.Diffuse.Red = 0.800000011920929
+          Material.BackProperties.Diffuse.Green = 0.800000011920929
+          Material.BackProperties.Diffuse.Blue = 0.800000011920929
+          Material.BackProperties.Diffuse.Alpha = 1
+          Material.BackProperties.Emission.Alpha = 1
+          Material.BackProperties.Specular.Alpha = 1
+          Material.FrontProperties.Ambient.Red = 0.200000002980232
+          Material.FrontProperties.Ambient.Green = 0.200000002980232
+          Material.FrontProperties.Ambient.Blue = 0.200000002980232
+          Material.FrontProperties.Ambient.Alpha = 1
+          Material.FrontProperties.Diffuse.Red = 0.800000011920929
+          Material.FrontProperties.Diffuse.Green = 0.800000011920929
+          Material.FrontProperties.Diffuse.Blue = 0.800000011920929
+          Material.FrontProperties.Diffuse.Alpha = 1
+          Material.FrontProperties.Emission.Red = 1
+          Material.FrontProperties.Emission.Alpha = 1
+          Material.FrontProperties.Emission.Color = {
+            0000803F00000000000000000000803F
+          }
+          Material.FrontProperties.Specular.Alpha = 1
+          Radius = 0.00999999977648258
+          object lbl_LPSI: TGLAbsoluteHUDText
+            BitmapFont = GLWindowsBitmapFont1
+            Text = 'LPSI'
+            ModulateColor.Red = 1
+            ModulateColor.Green = 1
+            ModulateColor.Blue = 1
+            ModulateColor.Alpha = 1
+          end
+        end
+        object GLLKNEE: TGLSphere
+          Material.BackProperties.Ambient.Red = 0.200000002980232
+          Material.BackProperties.Ambient.Green = 0.200000002980232
+          Material.BackProperties.Ambient.Blue = 0.200000002980232
+          Material.BackProperties.Ambient.Alpha = 1
+          Material.BackProperties.Diffuse.Red = 0.800000011920929
+          Material.BackProperties.Diffuse.Green = 0.800000011920929
+          Material.BackProperties.Diffuse.Blue = 0.800000011920929
+          Material.BackProperties.Diffuse.Alpha = 1
+          Material.BackProperties.Emission.Alpha = 1
+          Material.BackProperties.Specular.Alpha = 1
+          Material.FrontProperties.Ambient.Red = 0.200000002980232
+          Material.FrontProperties.Ambient.Green = 0.200000002980232
+          Material.FrontProperties.Ambient.Blue = 0.200000002980232
+          Material.FrontProperties.Ambient.Alpha = 1
+          Material.FrontProperties.Diffuse.Red = 0.800000011920929
+          Material.FrontProperties.Diffuse.Green = 0.800000011920929
+          Material.FrontProperties.Diffuse.Blue = 0.800000011920929
+          Material.FrontProperties.Diffuse.Alpha = 1
+          Material.FrontProperties.Emission.Red = 1
+          Material.FrontProperties.Emission.Green = 1
+          Material.FrontProperties.Emission.Alpha = 1
+          Material.FrontProperties.Emission.Color = {
+            0000803F0000803F000000000000803F
+          }
+          Material.FrontProperties.Specular.Alpha = 1
+          Radius = 0.0199999995529652
+          object lbl_LKNEE: TGLAbsoluteHUDText
+            BitmapFont = GLWindowsBitmapFont1
+            Text = 'LKNEE'
+            ModulateColor.Red = 1
+            ModulateColor.Green = 1
+            ModulateColor.Blue = 1
+            ModulateColor.Alpha = 1
+          end
+        end
+        object GLRKNEE: TGLSphere
+          Material.BackProperties.Ambient.Red = 0.200000002980232
+          Material.BackProperties.Ambient.Green = 0.200000002980232
+          Material.BackProperties.Ambient.Blue = 0.200000002980232
+          Material.BackProperties.Ambient.Alpha = 1
+          Material.BackProperties.Diffuse.Red = 0.800000011920929
+          Material.BackProperties.Diffuse.Green = 0.800000011920929
+          Material.BackProperties.Diffuse.Blue = 0.800000011920929
+          Material.BackProperties.Diffuse.Alpha = 1
+          Material.BackProperties.Emission.Alpha = 1
+          Material.BackProperties.Specular.Alpha = 1
+          Material.FrontProperties.Ambient.Red = 0.200000002980232
+          Material.FrontProperties.Ambient.Green = 0.200000002980232
+          Material.FrontProperties.Ambient.Blue = 0.200000002980232
+          Material.FrontProperties.Ambient.Alpha = 1
+          Material.FrontProperties.Diffuse.Red = 0.800000011920929
+          Material.FrontProperties.Diffuse.Green = 0.800000011920929
+          Material.FrontProperties.Diffuse.Blue = 0.800000011920929
+          Material.FrontProperties.Diffuse.Alpha = 1
+          Material.FrontProperties.Emission.Red = 1
+          Material.FrontProperties.Emission.Green = 1
+          Material.FrontProperties.Emission.Alpha = 1
+          Material.FrontProperties.Emission.Color = {
+            0000803F0000803F000000000000803F
+          }
+          Material.FrontProperties.Specular.Alpha = 1
+          Radius = 0.0199999995529652
+          object lbl_RKNEE: TGLAbsoluteHUDText
+            BitmapFont = GLWindowsBitmapFont1
+            Text = 'RKNEE'
+            ModulateColor.Red = 1
+            ModulateColor.Green = 1
+            ModulateColor.Blue = 1
+            ModulateColor.Alpha = 1
+          end
+        end
+        object pelvis_center: TGLDummyCube
+          CubeSize = 1
+          EdgeColor.Red = 1
+          EdgeColor.Green = 1
+          EdgeColor.Blue = 1
+          EdgeColor.Alpha = 1
+          object L_rot: TGLCube
+            Material.BackProperties.Ambient.Red = 0.200000002980232
+            Material.BackProperties.Ambient.Green = 0.200000002980232
+            Material.BackProperties.Ambient.Blue = 0.200000002980232
+            Material.BackProperties.Ambient.Alpha = 1
+            Material.BackProperties.Diffuse.Red = 0.800000011920929
+            Material.BackProperties.Diffuse.Green = 0.800000011920929
+            Material.BackProperties.Diffuse.Blue = 0.800000011920929
+            Material.BackProperties.Diffuse.Alpha = 1
+            Material.BackProperties.Emission.Alpha = 1
+            Material.BackProperties.Specular.Alpha = 1
+            Material.FrontProperties.Ambient.Red = 0.200000002980232
+            Material.FrontProperties.Ambient.Green = 0.200000002980232
+            Material.FrontProperties.Ambient.Blue = 0.200000002980232
+            Material.FrontProperties.Ambient.Alpha = 1
+            Material.FrontProperties.Diffuse.Red = 0.800000011920929
+            Material.FrontProperties.Diffuse.Green = 0.800000011920929
+            Material.FrontProperties.Diffuse.Blue = 0.800000011920929
+            Material.FrontProperties.Diffuse.Alpha = 1
+            Material.FrontProperties.Emission.Green = 1
+            Material.FrontProperties.Emission.Alpha = 1
+            Material.FrontProperties.Emission.Color = {
+              000000000000803F000000000000803F
+            }
+            Material.FrontProperties.Specular.Alpha = 1
+            CubeSize = {
+              0AD7233C0AD7233C0AD7233C
+            }
+          end
+          object R_rot: TGLCube
+            Material.BackProperties.Ambient.Red = 0.200000002980232
+            Material.BackProperties.Ambient.Green = 0.200000002980232
+            Material.BackProperties.Ambient.Blue = 0.200000002980232
+            Material.BackProperties.Ambient.Alpha = 1
+            Material.BackProperties.Diffuse.Red = 0.800000011920929
+            Material.BackProperties.Diffuse.Green = 0.800000011920929
+            Material.BackProperties.Diffuse.Blue = 0.800000011920929
+            Material.BackProperties.Diffuse.Alpha = 1
+            Material.BackProperties.Emission.Alpha = 1
+            Material.BackProperties.Specular.Alpha = 1
+            Material.FrontProperties.Ambient.Red = 0.200000002980232
+            Material.FrontProperties.Ambient.Green = 0.200000002980232
+            Material.FrontProperties.Ambient.Blue = 0.200000002980232
+            Material.FrontProperties.Ambient.Alpha = 1
+            Material.FrontProperties.Diffuse.Red = 0.800000011920929
+            Material.FrontProperties.Diffuse.Green = 0.800000011920929
+            Material.FrontProperties.Diffuse.Blue = 0.800000011920929
+            Material.FrontProperties.Diffuse.Alpha = 1
+            Material.FrontProperties.Emission.Green = 1
+            Material.FrontProperties.Emission.Blue = 1
+            Material.FrontProperties.Emission.Alpha = 1
+            Material.FrontProperties.Emission.Color = {
+              000000000000803F0000803F0000803F
+            }
+            Material.FrontProperties.Specular.Alpha = 1
+            CubeSize = {
+              0AD7233C0AD7233C0AD7233C
+            }
+          end
+        end
+        object lbl_xaxis: TGLAbsoluteHUDText
+          Position.Coordinates = {
+            9A99993E00000000000000000000803F
+          }
+          BitmapFont = GLWindowsBitmapFont1
+          Text = 'X'
+          ModulateColor.Red = 1
+          ModulateColor.Green = 1
+          ModulateColor.Blue = 1
+          ModulateColor.Alpha = 1
+        end
+        object lbl_yaxis: TGLAbsoluteHUDText
+          Position.Coordinates = {
+            000000009A99993E000000000000803F
+          }
+          BitmapFont = GLWindowsBitmapFont1
+          Text = 'Y'
+          ModulateColor.Red = 1
+          ModulateColor.Green = 1
+          ModulateColor.Blue = 1
+          ModulateColor.Alpha = 1
+        end
+        object lbl_zaxis: TGLAbsoluteHUDText
+          Position.Coordinates = {
+            00000000000000009A99993E0000803F
+          }
+          BitmapFont = GLWindowsBitmapFont1
+          Text = 'Z'
+          ModulateColor.Red = 1
+          ModulateColor.Green = 1
+          ModulateColor.Blue = 1
+          ModulateColor.Alpha = 1
+        end
+        object LFoot_Center: TGLDummyCube
+          CubeSize = 1
+          EdgeColor.Red = 1
+          EdgeColor.Green = 1
+          EdgeColor.Blue = 1
+          EdgeColor.Alpha = 1
+          object L_Ankle: TGLCube
+            Material.BackProperties.Ambient.Red = 0.200000002980232
+            Material.BackProperties.Ambient.Green = 0.200000002980232
+            Material.BackProperties.Ambient.Blue = 0.200000002980232
+            Material.BackProperties.Ambient.Alpha = 1
+            Material.BackProperties.Diffuse.Red = 0.800000011920929
+            Material.BackProperties.Diffuse.Green = 0.800000011920929
+            Material.BackProperties.Diffuse.Blue = 0.800000011920929
+            Material.BackProperties.Diffuse.Alpha = 1
+            Material.BackProperties.Emission.Alpha = 1
+            Material.BackProperties.Specular.Alpha = 1
+            Material.FrontProperties.Ambient.Red = 0.200000002980232
+            Material.FrontProperties.Ambient.Green = 0.200000002980232
+            Material.FrontProperties.Ambient.Blue = 0.200000002980232
+            Material.FrontProperties.Ambient.Alpha = 1
+            Material.FrontProperties.Diffuse.Red = 0.800000011920929
+            Material.FrontProperties.Diffuse.Green = 0.800000011920929
+            Material.FrontProperties.Diffuse.Blue = 0.800000011920929
+            Material.FrontProperties.Diffuse.Alpha = 1
+            Material.FrontProperties.Emission.Red = 1
+            Material.FrontProperties.Emission.Blue = 1
+            Material.FrontProperties.Emission.Alpha = 1
+            Material.FrontProperties.Emission.Color = {
+              0000803F000000000000803F0000803F
+            }
+            Material.FrontProperties.Specular.Alpha = 1
+            CubeSize = {
+              0AD7233C0AD7233C0AD7233C
+            }
+          end
+        end
+        object RFoot_Center: TGLDummyCube
+          CubeSize = 1
+          EdgeColor.Red = 1
+          EdgeColor.Green = 1
+          EdgeColor.Blue = 1
+          EdgeColor.Alpha = 1
+          object R_Ankle: TGLCube
+            Material.BackProperties.Ambient.Red = 0.200000002980232
+            Material.BackProperties.Ambient.Green = 0.200000002980232
+            Material.BackProperties.Ambient.Blue = 0.200000002980232
+            Material.BackProperties.Ambient.Alpha = 1
+            Material.BackProperties.Diffuse.Red = 0.800000011920929
+            Material.BackProperties.Diffuse.Green = 0.800000011920929
+            Material.BackProperties.Diffuse.Blue = 0.800000011920929
+            Material.BackProperties.Diffuse.Alpha = 1
+            Material.BackProperties.Emission.Alpha = 1
+            Material.BackProperties.Specular.Alpha = 1
+            Material.FrontProperties.Ambient.Red = 0.200000002980232
+            Material.FrontProperties.Ambient.Green = 0.200000002980232
+            Material.FrontProperties.Ambient.Blue = 0.200000002980232
+            Material.FrontProperties.Ambient.Alpha = 1
+            Material.FrontProperties.Diffuse.Red = 0.800000011920929
+            Material.FrontProperties.Diffuse.Green = 0.800000011920929
+            Material.FrontProperties.Diffuse.Blue = 0.800000011920929
+            Material.FrontProperties.Diffuse.Alpha = 1
+            Material.FrontProperties.Emission.Red = 0.501960813999176
+            Material.FrontProperties.Emission.Green = 0.501960813999176
+            Material.FrontProperties.Emission.Blue = 1
+            Material.FrontProperties.Emission.Alpha = 1
+            Material.FrontProperties.Emission.Color = {
+              8180003F8180003F0000803F0000803F
+            }
+            Material.FrontProperties.Specular.Alpha = 1
+            CubeSize = {
+              0AD7233C0AD7233C0AD7233C
+            }
+          end
+        end
+        object GLLANK: TGLSphere
+          Material.BackProperties.Ambient.Red = 0.200000002980232
+          Material.BackProperties.Ambient.Green = 0.200000002980232
+          Material.BackProperties.Ambient.Blue = 0.200000002980232
+          Material.BackProperties.Ambient.Alpha = 1
+          Material.BackProperties.Diffuse.Red = 0.800000011920929
+          Material.BackProperties.Diffuse.Green = 0.800000011920929
+          Material.BackProperties.Diffuse.Blue = 0.800000011920929
+          Material.BackProperties.Diffuse.Alpha = 1
+          Material.BackProperties.Emission.Alpha = 1
+          Material.BackProperties.Specular.Alpha = 1
+          Material.FrontProperties.Ambient.Red = 0.200000002980232
+          Material.FrontProperties.Ambient.Green = 0.200000002980232
+          Material.FrontProperties.Ambient.Blue = 0.200000002980232
+          Material.FrontProperties.Ambient.Alpha = 1
+          Material.FrontProperties.Diffuse.Red = 0.800000011920929
+          Material.FrontProperties.Diffuse.Green = 0.800000011920929
+          Material.FrontProperties.Diffuse.Blue = 0.800000011920929
+          Material.FrontProperties.Diffuse.Alpha = 1
+          Material.FrontProperties.Emission.Red = 1
+          Material.FrontProperties.Emission.Alpha = 1
+          Material.FrontProperties.Emission.Color = {
+            0000803F00000000000000000000803F
+          }
+          Material.FrontProperties.Specular.Alpha = 1
+          Radius = 0.00999999977648258
+          object lbl_LANK: TGLAbsoluteHUDText
+            BitmapFont = GLWindowsBitmapFont1
+            Text = 'LANK'
+            ModulateColor.Red = 1
+            ModulateColor.Green = 1
+            ModulateColor.Blue = 1
+            ModulateColor.Alpha = 1
+          end
+        end
+        object GLLTOE: TGLSphere
+          Material.BackProperties.Ambient.Red = 0.200000002980232
+          Material.BackProperties.Ambient.Green = 0.200000002980232
+          Material.BackProperties.Ambient.Blue = 0.200000002980232
+          Material.BackProperties.Ambient.Alpha = 1
+          Material.BackProperties.Diffuse.Red = 0.800000011920929
+          Material.BackProperties.Diffuse.Green = 0.800000011920929
+          Material.BackProperties.Diffuse.Blue = 0.800000011920929
+          Material.BackProperties.Diffuse.Alpha = 1
+          Material.BackProperties.Emission.Alpha = 1
+          Material.BackProperties.Specular.Alpha = 1
+          Material.FrontProperties.Ambient.Red = 0.200000002980232
+          Material.FrontProperties.Ambient.Green = 0.200000002980232
+          Material.FrontProperties.Ambient.Blue = 0.200000002980232
+          Material.FrontProperties.Ambient.Alpha = 1
+          Material.FrontProperties.Diffuse.Red = 0.800000011920929
+          Material.FrontProperties.Diffuse.Green = 0.800000011920929
+          Material.FrontProperties.Diffuse.Blue = 0.800000011920929
+          Material.FrontProperties.Diffuse.Alpha = 1
+          Material.FrontProperties.Emission.Red = 1
+          Material.FrontProperties.Emission.Alpha = 1
+          Material.FrontProperties.Emission.Color = {
+            0000803F00000000000000000000803F
+          }
+          Material.FrontProperties.Specular.Alpha = 1
+          Radius = 0.00999999977648258
+          object lbl_LTOE: TGLAbsoluteHUDText
+            BitmapFont = GLWindowsBitmapFont1
+            Text = 'LTOE'
+            ModulateColor.Red = 1
+            ModulateColor.Green = 1
+            ModulateColor.Blue = 1
+            ModulateColor.Alpha = 1
+          end
+        end
+        object GLLHEE: TGLSphere
+          Material.BackProperties.Ambient.Red = 0.200000002980232
+          Material.BackProperties.Ambient.Green = 0.200000002980232
+          Material.BackProperties.Ambient.Blue = 0.200000002980232
+          Material.BackProperties.Ambient.Alpha = 1
+          Material.BackProperties.Diffuse.Red = 0.800000011920929
+          Material.BackProperties.Diffuse.Green = 0.800000011920929
+          Material.BackProperties.Diffuse.Blue = 0.800000011920929
+          Material.BackProperties.Diffuse.Alpha = 1
+          Material.BackProperties.Emission.Alpha = 1
+          Material.BackProperties.Specular.Alpha = 1
+          Material.FrontProperties.Ambient.Red = 0.200000002980232
+          Material.FrontProperties.Ambient.Green = 0.200000002980232
+          Material.FrontProperties.Ambient.Blue = 0.200000002980232
+          Material.FrontProperties.Ambient.Alpha = 1
+          Material.FrontProperties.Diffuse.Red = 0.800000011920929
+          Material.FrontProperties.Diffuse.Green = 0.800000011920929
+          Material.FrontProperties.Diffuse.Blue = 0.800000011920929
+          Material.FrontProperties.Diffuse.Alpha = 1
+          Material.FrontProperties.Emission.Red = 1
+          Material.FrontProperties.Emission.Alpha = 1
+          Material.FrontProperties.Emission.Color = {
+            0000803F00000000000000000000803F
+          }
+          Material.FrontProperties.Specular.Alpha = 1
+          Radius = 0.00999999977648258
+          object lbl_LHEE: TGLAbsoluteHUDText
+            BitmapFont = GLWindowsBitmapFont1
+            Text = 'LHEE'
+            ModulateColor.Red = 1
+            ModulateColor.Green = 1
+            ModulateColor.Blue = 1
+            ModulateColor.Alpha = 1
+          end
+        end
+        object GLLMT5: TGLSphere
+          Material.BackProperties.Ambient.Red = 0.200000002980232
+          Material.BackProperties.Ambient.Green = 0.200000002980232
+          Material.BackProperties.Ambient.Blue = 0.200000002980232
+          Material.BackProperties.Ambient.Alpha = 1
+          Material.BackProperties.Diffuse.Red = 0.800000011920929
+          Material.BackProperties.Diffuse.Green = 0.800000011920929
+          Material.BackProperties.Diffuse.Blue = 0.800000011920929
+          Material.BackProperties.Diffuse.Alpha = 1
+          Material.BackProperties.Emission.Alpha = 1
+          Material.BackProperties.Specular.Alpha = 1
+          Material.FrontProperties.Ambient.Red = 0.200000002980232
+          Material.FrontProperties.Ambient.Green = 0.200000002980232
+          Material.FrontProperties.Ambient.Blue = 0.200000002980232
+          Material.FrontProperties.Ambient.Alpha = 1
+          Material.FrontProperties.Diffuse.Red = 0.800000011920929
+          Material.FrontProperties.Diffuse.Green = 0.800000011920929
+          Material.FrontProperties.Diffuse.Blue = 0.800000011920929
+          Material.FrontProperties.Diffuse.Alpha = 1
+          Material.FrontProperties.Emission.Red = 1
+          Material.FrontProperties.Emission.Alpha = 1
+          Material.FrontProperties.Emission.Color = {
+            0000803F00000000000000000000803F
+          }
+          Material.FrontProperties.Specular.Alpha = 1
+          Radius = 0.00999999977648258
+          object lbl_LMT5: TGLAbsoluteHUDText
+            BitmapFont = GLWindowsBitmapFont1
+            Text = 'LMT5'
+            ModulateColor.Red = 1
+            ModulateColor.Green = 1
+            ModulateColor.Blue = 1
+            ModulateColor.Alpha = 1
+          end
+        end
+        object GLRANK: TGLSphere
+          Material.BackProperties.Ambient.Red = 0.200000002980232
+          Material.BackProperties.Ambient.Green = 0.200000002980232
+          Material.BackProperties.Ambient.Blue = 0.200000002980232
+          Material.BackProperties.Ambient.Alpha = 1
+          Material.BackProperties.Diffuse.Red = 0.800000011920929
+          Material.BackProperties.Diffuse.Green = 0.800000011920929
+          Material.BackProperties.Diffuse.Blue = 0.800000011920929
+          Material.BackProperties.Diffuse.Alpha = 1
+          Material.BackProperties.Emission.Alpha = 1
+          Material.BackProperties.Specular.Alpha = 1
+          Material.FrontProperties.Ambient.Red = 0.200000002980232
+          Material.FrontProperties.Ambient.Green = 0.200000002980232
+          Material.FrontProperties.Ambient.Blue = 0.200000002980232
+          Material.FrontProperties.Ambient.Alpha = 1
+          Material.FrontProperties.Diffuse.Red = 0.800000011920929
+          Material.FrontProperties.Diffuse.Green = 0.800000011920929
+          Material.FrontProperties.Diffuse.Blue = 0.800000011920929
+          Material.FrontProperties.Diffuse.Alpha = 1
+          Material.FrontProperties.Emission.Red = 1
+          Material.FrontProperties.Emission.Alpha = 1
+          Material.FrontProperties.Emission.Color = {
+            0000803F00000000000000000000803F
+          }
+          Material.FrontProperties.Specular.Alpha = 1
+          Radius = 0.00999999977648258
+          object lbl_RANK: TGLAbsoluteHUDText
+            BitmapFont = GLWindowsBitmapFont1
+            Text = 'RANK'
+            ModulateColor.Red = 1
+            ModulateColor.Green = 1
+            ModulateColor.Blue = 1
+            ModulateColor.Alpha = 1
+          end
+        end
+        object GLRTOE: TGLSphere
+          Material.BackProperties.Ambient.Red = 0.200000002980232
+          Material.BackProperties.Ambient.Green = 0.200000002980232
+          Material.BackProperties.Ambient.Blue = 0.200000002980232
+          Material.BackProperties.Ambient.Alpha = 1
+          Material.BackProperties.Diffuse.Red = 0.800000011920929
+          Material.BackProperties.Diffuse.Green = 0.800000011920929
+          Material.BackProperties.Diffuse.Blue = 0.800000011920929
+          Material.BackProperties.Diffuse.Alpha = 1
+          Material.BackProperties.Emission.Alpha = 1
+          Material.BackProperties.Specular.Alpha = 1
+          Material.FrontProperties.Ambient.Red = 0.200000002980232
+          Material.FrontProperties.Ambient.Green = 0.200000002980232
+          Material.FrontProperties.Ambient.Blue = 0.200000002980232
+          Material.FrontProperties.Ambient.Alpha = 1
+          Material.FrontProperties.Diffuse.Red = 0.800000011920929
+          Material.FrontProperties.Diffuse.Green = 0.800000011920929
+          Material.FrontProperties.Diffuse.Blue = 0.800000011920929
+          Material.FrontProperties.Diffuse.Alpha = 1
+          Material.FrontProperties.Emission.Red = 1
+          Material.FrontProperties.Emission.Alpha = 1
+          Material.FrontProperties.Emission.Color = {
+            0000803F00000000000000000000803F
+          }
+          Material.FrontProperties.Specular.Alpha = 1
+          Radius = 0.00999999977648258
+          object lbl_RTOE: TGLAbsoluteHUDText
+            BitmapFont = GLWindowsBitmapFont1
+            Text = 'RTOE'
+            ModulateColor.Red = 1
+            ModulateColor.Green = 1
+            ModulateColor.Blue = 1
+            ModulateColor.Alpha = 1
+          end
+        end
+        object GLRHEE: TGLSphere
+          Material.BackProperties.Ambient.Red = 0.200000002980232
+          Material.BackProperties.Ambient.Green = 0.200000002980232
+          Material.BackProperties.Ambient.Blue = 0.200000002980232
+          Material.BackProperties.Ambient.Alpha = 1
+          Material.BackProperties.Diffuse.Red = 0.800000011920929
+          Material.BackProperties.Diffuse.Green = 0.800000011920929
+          Material.BackProperties.Diffuse.Blue = 0.800000011920929
+          Material.BackProperties.Diffuse.Alpha = 1
+          Material.BackProperties.Emission.Alpha = 1
+          Material.BackProperties.Specular.Alpha = 1
+          Material.FrontProperties.Ambient.Red = 0.200000002980232
+          Material.FrontProperties.Ambient.Green = 0.200000002980232
+          Material.FrontProperties.Ambient.Blue = 0.200000002980232
+          Material.FrontProperties.Ambient.Alpha = 1
+          Material.FrontProperties.Diffuse.Red = 0.800000011920929
+          Material.FrontProperties.Diffuse.Green = 0.800000011920929
+          Material.FrontProperties.Diffuse.Blue = 0.800000011920929
+          Material.FrontProperties.Diffuse.Alpha = 1
+          Material.FrontProperties.Emission.Red = 1
+          Material.FrontProperties.Emission.Alpha = 1
+          Material.FrontProperties.Emission.Color = {
+            0000803F00000000000000000000803F
+          }
+          Material.FrontProperties.Specular.Alpha = 1
+          Radius = 0.00999999977648258
+          object lbl_RHEE: TGLAbsoluteHUDText
+            BitmapFont = GLWindowsBitmapFont1
+            Text = 'RHEE'
+            ModulateColor.Red = 1
+            ModulateColor.Green = 1
+            ModulateColor.Blue = 1
+            ModulateColor.Alpha = 1
+          end
+        end
+        object GLRMT5: TGLSphere
+          Material.BackProperties.Ambient.Red = 0.200000002980232
+          Material.BackProperties.Ambient.Green = 0.200000002980232
+          Material.BackProperties.Ambient.Blue = 0.200000002980232
+          Material.BackProperties.Ambient.Alpha = 1
+          Material.BackProperties.Diffuse.Red = 0.800000011920929
+          Material.BackProperties.Diffuse.Green = 0.800000011920929
+          Material.BackProperties.Diffuse.Blue = 0.800000011920929
+          Material.BackProperties.Diffuse.Alpha = 1
+          Material.BackProperties.Emission.Alpha = 1
+          Material.BackProperties.Specular.Alpha = 1
+          Material.FrontProperties.Ambient.Red = 0.200000002980232
+          Material.FrontProperties.Ambient.Green = 0.200000002980232
+          Material.FrontProperties.Ambient.Blue = 0.200000002980232
+          Material.FrontProperties.Ambient.Alpha = 1
+          Material.FrontProperties.Diffuse.Red = 0.800000011920929
+          Material.FrontProperties.Diffuse.Green = 0.800000011920929
+          Material.FrontProperties.Diffuse.Blue = 0.800000011920929
+          Material.FrontProperties.Diffuse.Alpha = 1
+          Material.FrontProperties.Emission.Red = 1
+          Material.FrontProperties.Emission.Alpha = 1
+          Material.FrontProperties.Emission.Color = {
+            0000803F00000000000000000000803F
+          }
+          Material.FrontProperties.Specular.Alpha = 1
+          Radius = 0.00999999977648258
+          object lbl_RMT5: TGLAbsoluteHUDText
+            BitmapFont = GLWindowsBitmapFont1
+            Text = 'RMT5'
+            ModulateColor.Red = 1
+            ModulateColor.Green = 1
+            ModulateColor.Blue = 1
+            ModulateColor.Alpha = 1
+          end
+        end
+        object LKnee_Center: TGLDummyCube
+          CubeSize = 1
+          EdgeColor.Red = 1
+          EdgeColor.Green = 1
+          EdgeColor.Blue = 1
+          EdgeColor.Alpha = 1
+          object RealLKnee: TGLCube
+            Material.BackProperties.Ambient.Red = 0.200000002980232
+            Material.BackProperties.Ambient.Green = 0.200000002980232
+            Material.BackProperties.Ambient.Blue = 0.200000002980232
+            Material.BackProperties.Ambient.Alpha = 1
+            Material.BackProperties.Diffuse.Red = 0.800000011920929
+            Material.BackProperties.Diffuse.Green = 0.800000011920929
+            Material.BackProperties.Diffuse.Blue = 0.800000011920929
+            Material.BackProperties.Diffuse.Alpha = 1
+            Material.BackProperties.Emission.Alpha = 1
+            Material.BackProperties.Specular.Alpha = 1
+            Material.FrontProperties.Ambient.Red = 0.200000002980232
+            Material.FrontProperties.Ambient.Green = 0.200000002980232
+            Material.FrontProperties.Ambient.Blue = 0.200000002980232
+            Material.FrontProperties.Ambient.Alpha = 1
+            Material.FrontProperties.Diffuse.Red = 0.800000011920929
+            Material.FrontProperties.Diffuse.Green = 0.800000011920929
+            Material.FrontProperties.Diffuse.Blue = 0.800000011920929
+            Material.FrontProperties.Diffuse.Alpha = 1
+            Material.FrontProperties.Emission.Red = 1
+            Material.FrontProperties.Emission.Green = 1
+            Material.FrontProperties.Emission.Alpha = 1
+            Material.FrontProperties.Emission.Color = {
+              0000803F0000803F000000000000803F
+            }
+            Material.FrontProperties.Specular.Alpha = 1
+          end
+        end
+        object RKnee_Center: TGLDummyCube
+          CubeSize = 1
+          EdgeColor.Red = 1
+          EdgeColor.Green = 1
+          EdgeColor.Blue = 1
+          EdgeColor.Alpha = 1
+          object RealRKNEE: TGLCube
+            Material.BackProperties.Ambient.Red = 0.200000002980232
+            Material.BackProperties.Ambient.Green = 0.200000002980232
+            Material.BackProperties.Ambient.Blue = 0.200000002980232
+            Material.BackProperties.Ambient.Alpha = 1
+            Material.BackProperties.Diffuse.Red = 0.800000011920929
+            Material.BackProperties.Diffuse.Green = 0.800000011920929
+            Material.BackProperties.Diffuse.Blue = 0.800000011920929
+            Material.BackProperties.Diffuse.Alpha = 1
+            Material.BackProperties.Emission.Alpha = 1
+            Material.BackProperties.Specular.Alpha = 1
+            Material.FrontProperties.Ambient.Red = 0.200000002980232
+            Material.FrontProperties.Ambient.Green = 0.200000002980232
+            Material.FrontProperties.Ambient.Blue = 0.200000002980232
+            Material.FrontProperties.Ambient.Alpha = 1
+            Material.FrontProperties.Diffuse.Red = 0.800000011920929
+            Material.FrontProperties.Diffuse.Green = 0.800000011920929
+            Material.FrontProperties.Diffuse.Blue = 0.800000011920929
+            Material.FrontProperties.Diffuse.Alpha = 1
+            Material.FrontProperties.Emission.Red = 1
+            Material.FrontProperties.Emission.Green = 1
+            Material.FrontProperties.Emission.Alpha = 1
+            Material.FrontProperties.Emission.Color = {
+              0000803F0000803F000000000000803F
+            }
+            Material.FrontProperties.Specular.Alpha = 1
+          end
+        end
+        object GLLTHI: TGLSphere
+          Material.BackProperties.Ambient.Red = 0.200000002980232
+          Material.BackProperties.Ambient.Green = 0.200000002980232
+          Material.BackProperties.Ambient.Blue = 0.200000002980232
+          Material.BackProperties.Ambient.Alpha = 1
+          Material.BackProperties.Diffuse.Red = 0.800000011920929
+          Material.BackProperties.Diffuse.Green = 0.800000011920929
+          Material.BackProperties.Diffuse.Blue = 0.800000011920929
+          Material.BackProperties.Diffuse.Alpha = 1
+          Material.BackProperties.Emission.Alpha = 1
+          Material.BackProperties.Specular.Alpha = 1
+          Material.FrontProperties.Ambient.Red = 0.200000002980232
+          Material.FrontProperties.Ambient.Green = 0.200000002980232
+          Material.FrontProperties.Ambient.Blue = 0.200000002980232
+          Material.FrontProperties.Ambient.Alpha = 1
+          Material.FrontProperties.Diffuse.Red = 0.800000011920929
+          Material.FrontProperties.Diffuse.Green = 0.800000011920929
+          Material.FrontProperties.Diffuse.Blue = 0.800000011920929
+          Material.FrontProperties.Diffuse.Alpha = 1
+          Material.FrontProperties.Emission.Red = 1
+          Material.FrontProperties.Emission.Alpha = 1
+          Material.FrontProperties.Emission.Color = {
+            0000803F00000000000000000000803F
+          }
+          Material.FrontProperties.Specular.Alpha = 1
+          Radius = 0.00999999977648258
+          object lbl_LTHI: TGLAbsoluteHUDText
+            BitmapFont = GLWindowsBitmapFont1
+            Text = 'LTHI'
+            ModulateColor.Red = 1
+            ModulateColor.Green = 1
+            ModulateColor.Blue = 1
+            ModulateColor.Alpha = 1
+          end
+        end
+        object GLRTHI: TGLSphere
+          Material.BackProperties.Ambient.Red = 0.200000002980232
+          Material.BackProperties.Ambient.Green = 0.200000002980232
+          Material.BackProperties.Ambient.Blue = 0.200000002980232
+          Material.BackProperties.Ambient.Alpha = 1
+          Material.BackProperties.Diffuse.Red = 0.800000011920929
+          Material.BackProperties.Diffuse.Green = 0.800000011920929
+          Material.BackProperties.Diffuse.Blue = 0.800000011920929
+          Material.BackProperties.Diffuse.Alpha = 1
+          Material.BackProperties.Emission.Alpha = 1
+          Material.BackProperties.Specular.Alpha = 1
+          Material.FrontProperties.Ambient.Red = 0.200000002980232
+          Material.FrontProperties.Ambient.Green = 0.200000002980232
+          Material.FrontProperties.Ambient.Blue = 0.200000002980232
+          Material.FrontProperties.Ambient.Alpha = 1
+          Material.FrontProperties.Diffuse.Red = 0.800000011920929
+          Material.FrontProperties.Diffuse.Green = 0.800000011920929
+          Material.FrontProperties.Diffuse.Blue = 0.800000011920929
+          Material.FrontProperties.Diffuse.Alpha = 1
+          Material.FrontProperties.Emission.Red = 1
+          Material.FrontProperties.Emission.Alpha = 1
+          Material.FrontProperties.Emission.Color = {
+            0000803F00000000000000000000803F
+          }
+          Material.FrontProperties.Specular.Alpha = 1
+          Radius = 0.00999999977648258
+          object lbl_RTHI: TGLAbsoluteHUDText
+            BitmapFont = GLWindowsBitmapFont1
+            Text = 'RTHI'
+            ModulateColor.Red = 1
+            ModulateColor.Green = 1
+            ModulateColor.Blue = 1
+            ModulateColor.Alpha = 1
+          end
+        end
+        object IKHip_ref: TGLDummyCube
+          CubeSize = 1
+          EdgeColor.Red = 1
+          EdgeColor.Green = 1
+          EdgeColor.Blue = 1
+          EdgeColor.Alpha = 1
+          object GLHip: TGLFreeForm
+            Material.BackProperties.Ambient.Red = 0.200000002980232
+            Material.BackProperties.Ambient.Green = 0.200000002980232
+            Material.BackProperties.Ambient.Blue = 0.200000002980232
+            Material.BackProperties.Ambient.Alpha = 1
+            Material.BackProperties.Diffuse.Red = 0.800000011920929
+            Material.BackProperties.Diffuse.Green = 0.800000011920929
+            Material.BackProperties.Diffuse.Blue = 0.800000011920929
+            Material.BackProperties.Diffuse.Alpha = 1
+            Material.BackProperties.Emission.Alpha = 1
+            Material.BackProperties.Specular.Alpha = 1
+            Material.FrontProperties.Ambient.Red = 0.200000002980232
+            Material.FrontProperties.Ambient.Green = 0.200000002980232
+            Material.FrontProperties.Ambient.Blue = 0.200000002980232
+            Material.FrontProperties.Ambient.Alpha = 1
+            Material.FrontProperties.Diffuse.Red = 0.800000011920929
+            Material.FrontProperties.Diffuse.Green = 0.800000011920929
+            Material.FrontProperties.Diffuse.Blue = 0.800000011920929
+            Material.FrontProperties.Diffuse.Alpha = 1
+            Material.FrontProperties.Emission.Alpha = 1
+            Material.FrontProperties.Specular.Alpha = 1
+          end
+          object IKLFemur_ref: TGLDummyCube
+            CubeSize = 1
+            EdgeColor.Red = 1
+            EdgeColor.Green = 1
+            EdgeColor.Blue = 1
+            EdgeColor.Alpha = 1
+            object GLFemur_L: TGLFreeForm
+              Material.BackProperties.Ambient.Red = 0.200000002980232
+              Material.BackProperties.Ambient.Green = 0.200000002980232
+              Material.BackProperties.Ambient.Blue = 0.200000002980232
+              Material.BackProperties.Ambient.Alpha = 1
+              Material.BackProperties.Diffuse.Red = 0.800000011920929
+              Material.BackProperties.Diffuse.Green = 0.800000011920929
+              Material.BackProperties.Diffuse.Blue = 0.800000011920929
+              Material.BackProperties.Diffuse.Alpha = 1
+              Material.BackProperties.Emission.Alpha = 1
+              Material.BackProperties.Specular.Alpha = 1
+              Material.FrontProperties.Ambient.Red = 0.200000002980232
+              Material.FrontProperties.Ambient.Green = 0.200000002980232
+              Material.FrontProperties.Ambient.Blue = 0.200000002980232
+              Material.FrontProperties.Ambient.Alpha = 1
+              Material.FrontProperties.Diffuse.Red = 0.800000011920929
+              Material.FrontProperties.Diffuse.Green = 0.800000011920929
+              Material.FrontProperties.Diffuse.Blue = 0.800000011920929
+              Material.FrontProperties.Diffuse.Alpha = 1
+              Material.FrontProperties.Emission.Alpha = 1
+              Material.FrontProperties.Specular.Alpha = 1
+            end
+            object IKLTibia_ref: TGLDummyCube
+              CubeSize = 1
+              EdgeColor.Red = 1
+              EdgeColor.Green = 1
+              EdgeColor.Blue = 1
+              EdgeColor.Alpha = 1
+              object GLTibia_L: TGLFreeForm
+                Material.BackProperties.Ambient.Red = 0.200000002980232
+                Material.BackProperties.Ambient.Green = 0.200000002980232
+                Material.BackProperties.Ambient.Blue = 0.200000002980232
+                Material.BackProperties.Ambient.Alpha = 1
+                Material.BackProperties.Diffuse.Red = 0.800000011920929
+                Material.BackProperties.Diffuse.Green = 0.800000011920929
+                Material.BackProperties.Diffuse.Blue = 0.800000011920929
+                Material.BackProperties.Diffuse.Alpha = 1
+                Material.BackProperties.Emission.Alpha = 1
+                Material.BackProperties.Specular.Alpha = 1
+                Material.FrontProperties.Ambient.Red = 0.200000002980232
+                Material.FrontProperties.Ambient.Green = 0.200000002980232
+                Material.FrontProperties.Ambient.Blue = 0.200000002980232
+                Material.FrontProperties.Ambient.Alpha = 1
+                Material.FrontProperties.Diffuse.Red = 0.800000011920929
+                Material.FrontProperties.Diffuse.Green = 0.800000011920929
+                Material.FrontProperties.Diffuse.Blue = 0.800000011920929
+                Material.FrontProperties.Diffuse.Alpha = 1
+                Material.FrontProperties.Emission.Alpha = 1
+                Material.FrontProperties.Specular.Alpha = 1
+              end
+              object IKLFoot_ref: TGLDummyCube
+                CubeSize = 1
+                EdgeColor.Red = 1
+                EdgeColor.Green = 1
+                EdgeColor.Blue = 1
+                EdgeColor.Alpha = 1
+                object GLFoot_L: TGLFreeForm
+                  Material.BackProperties.Ambient.Red = 0.200000002980232
+                  Material.BackProperties.Ambient.Green = 0.200000002980232
+                  Material.BackProperties.Ambient.Blue = 0.200000002980232
+                  Material.BackProperties.Ambient.Alpha = 1
+                  Material.BackProperties.Diffuse.Red = 0.800000011920929
+                  Material.BackProperties.Diffuse.Green = 0.800000011920929
+                  Material.BackProperties.Diffuse.Blue = 0.800000011920929
+                  Material.BackProperties.Diffuse.Alpha = 1
+                  Material.BackProperties.Emission.Alpha = 1
+                  Material.BackProperties.Specular.Alpha = 1
+                  Material.FrontProperties.Ambient.Red = 0.200000002980232
+                  Material.FrontProperties.Ambient.Green = 0.200000002980232
+                  Material.FrontProperties.Ambient.Blue = 0.200000002980232
+                  Material.FrontProperties.Ambient.Alpha = 1
+                  Material.FrontProperties.Diffuse.Red = 0.800000011920929
+                  Material.FrontProperties.Diffuse.Green = 0.800000011920929
+                  Material.FrontProperties.Diffuse.Blue = 0.800000011920929
+                  Material.FrontProperties.Diffuse.Alpha = 1
+                  Material.FrontProperties.Emission.Alpha = 1
+                  Material.FrontProperties.Specular.Alpha = 1
+                end
+              end
+            end
+          end
+          object IKRFemur_ref: TGLDummyCube
+            CubeSize = 1
+            EdgeColor.Red = 1
+            EdgeColor.Green = 1
+            EdgeColor.Blue = 1
+            EdgeColor.Alpha = 1
+            object GLFemur_R: TGLFreeForm
+              Material.BackProperties.Ambient.Red = 0.200000002980232
+              Material.BackProperties.Ambient.Green = 0.200000002980232
+              Material.BackProperties.Ambient.Blue = 0.200000002980232
+              Material.BackProperties.Ambient.Alpha = 1
+              Material.BackProperties.Diffuse.Red = 0.800000011920929
+              Material.BackProperties.Diffuse.Green = 0.800000011920929
+              Material.BackProperties.Diffuse.Blue = 0.800000011920929
+              Material.BackProperties.Diffuse.Alpha = 1
+              Material.BackProperties.Emission.Alpha = 1
+              Material.BackProperties.Specular.Alpha = 1
+              Material.FrontProperties.Ambient.Red = 0.200000002980232
+              Material.FrontProperties.Ambient.Green = 0.200000002980232
+              Material.FrontProperties.Ambient.Blue = 0.200000002980232
+              Material.FrontProperties.Ambient.Alpha = 1
+              Material.FrontProperties.Diffuse.Red = 0.800000011920929
+              Material.FrontProperties.Diffuse.Green = 0.800000011920929
+              Material.FrontProperties.Diffuse.Blue = 0.800000011920929
+              Material.FrontProperties.Diffuse.Alpha = 1
+              Material.FrontProperties.Emission.Alpha = 1
+              Material.FrontProperties.Specular.Alpha = 1
+              Visible = False
+            end
+            object IKRTibia_ref: TGLDummyCube
+              CubeSize = 1
+              EdgeColor.Red = 1
+              EdgeColor.Green = 1
+              EdgeColor.Blue = 1
+              EdgeColor.Alpha = 1
+              object GLTibia_R: TGLFreeForm
+                Material.BackProperties.Ambient.Red = 0.200000002980232
+                Material.BackProperties.Ambient.Green = 0.200000002980232
+                Material.BackProperties.Ambient.Blue = 0.200000002980232
+                Material.BackProperties.Ambient.Alpha = 1
+                Material.BackProperties.Diffuse.Red = 0.800000011920929
+                Material.BackProperties.Diffuse.Green = 0.800000011920929
+                Material.BackProperties.Diffuse.Blue = 0.800000011920929
+                Material.BackProperties.Diffuse.Alpha = 1
+                Material.BackProperties.Emission.Alpha = 1
+                Material.BackProperties.Specular.Alpha = 1
+                Material.FrontProperties.Ambient.Red = 0.200000002980232
+                Material.FrontProperties.Ambient.Green = 0.200000002980232
+                Material.FrontProperties.Ambient.Blue = 0.200000002980232
+                Material.FrontProperties.Ambient.Alpha = 1
+                Material.FrontProperties.Diffuse.Red = 0.800000011920929
+                Material.FrontProperties.Diffuse.Green = 0.800000011920929
+                Material.FrontProperties.Diffuse.Blue = 0.800000011920929
+                Material.FrontProperties.Diffuse.Alpha = 1
+                Material.FrontProperties.Emission.Alpha = 1
+                Material.FrontProperties.Specular.Alpha = 1
+              end
+              object IKRFoot_ref: TGLDummyCube
+                CubeSize = 1
+                EdgeColor.Red = 1
+                EdgeColor.Green = 1
+                EdgeColor.Blue = 1
+                EdgeColor.Alpha = 1
+                object GLFoot_R: TGLFreeForm
+                  Material.BackProperties.Ambient.Red = 0.200000002980232
+                  Material.BackProperties.Ambient.Green = 0.200000002980232
+                  Material.BackProperties.Ambient.Blue = 0.200000002980232
+                  Material.BackProperties.Ambient.Alpha = 1
+                  Material.BackProperties.Diffuse.Red = 0.800000011920929
+                  Material.BackProperties.Diffuse.Green = 0.800000011920929
+                  Material.BackProperties.Diffuse.Blue = 0.800000011920929
+                  Material.BackProperties.Diffuse.Alpha = 1
+                  Material.BackProperties.Emission.Alpha = 1
+                  Material.BackProperties.Specular.Alpha = 1
+                  Material.FrontProperties.Ambient.Red = 0.200000002980232
+                  Material.FrontProperties.Ambient.Green = 0.200000002980232
+                  Material.FrontProperties.Ambient.Blue = 0.200000002980232
+                  Material.FrontProperties.Ambient.Alpha = 1
+                  Material.FrontProperties.Diffuse.Red = 0.800000011920929
+                  Material.FrontProperties.Diffuse.Green = 0.800000011920929
+                  Material.FrontProperties.Diffuse.Blue = 0.800000011920929
+                  Material.FrontProperties.Diffuse.Alpha = 1
+                  Material.FrontProperties.Emission.Alpha = 1
+                  Material.FrontProperties.Specular.Alpha = 1
+                end
+              end
+            end
+          end
+        end
+      end
+      object GLLLeg: TGLLines
+        LineColor.Red = 1
+        LineColor.Green = 1
+        LineColor.Alpha = 1
+        LineColor.Color = {
+          0000803F0000803F000000000000803F
+        }
+        NodeColor.Blue = 1
+        NodeColor.Alpha = 1
+        Nodes = <        
+          item
+          end        
+          item
+          end        
+          item
+          end>
+        NodesAspect = lnaInvisible
+        Options = []
+      end
+      object GLRLeg: TGLLines
+        LineColor.Red = 1
+        LineColor.Green = 1
+        LineColor.Alpha = 1
+        LineColor.Color = {
+          0000803F0000803F000000000000803F
+        }
+        NodeColor.Blue = 1
+        NodeColor.Alpha = 1
+        Nodes = <        
+          item
+          end        
+          item
+          end        
+          item
+          end>
+        NodesAspect = lnaInvisible
+        Options = []
+      end
+    end
+    object GLCamera1: TGLCamera
+      DepthOfView = 100
+      FocalLength = 50
+      NearPlaneBias = 0.00999999977648258
+      TargetObject = GLDummyCube2
+      Position.Coordinates = {
+        0000803F0000803F000000400000803F
+      }
+      object GLLightSource1: TGLLightSource
+        Ambient.Alpha = 1
+        ConstAttenuation = 1
+        Diffuse.Red = 1
+        Diffuse.Green = 1
+        Diffuse.Blue = 1
+        Diffuse.Alpha = 1
+        LightStyle = lsOmni
+        Specular.Alpha = 1
+        SpotCutOff = 180
+        SpotDirection.Coordinates = {
+          0000803F000000000000803F00000000
+        }
+      end
+    end
+  end
+  object GLCadencer1: TGLCadencer
+    Scene = GLScene1
+    OnProgress = GLCadencer1Progress
+    Left = 656
+    Top = 528
+  end
+  object GLWindowsBitmapFont1: TGLWindowsBitmapFont
+    Font.Color = clWhite
+    Font.Height = -9
+    Left = 552
+    Top = 528
+  end
+  object SelectDirectoryDialog1: TSelectDirectoryDialog
+    Left = 784
+    Top = 544
+  end
+end

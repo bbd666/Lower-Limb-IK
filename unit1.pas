@@ -1404,7 +1404,7 @@ var
    Y,Mo,D,H,Mi,S,MS : Word;
 
 begin
-
+   windowState:=wsMinimized;
    ElapsedTime := Now;
 
    File_List := TStringList.Create;
@@ -1437,6 +1437,7 @@ begin
   DecodeDateTime(ElapsedTime,Y,Mo,D,H,Mi,S,MS);
 //  caption:=DateTimeToStr(ElapsedTime);
   caption:='Elapsed Time : '+inttostr(H)+' Hours, '+inttostr(Mi)+' Minutes, '+inttostr(S)+' Seconds, '+inttostr(Ms)+' Milliseconds';
+  windowState:=wsNormal;
 
 end;
 
